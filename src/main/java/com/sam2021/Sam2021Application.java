@@ -2,6 +2,11 @@ package com.sam2021;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import javax.sql.DataSource;
+
 /**
  * This is the main class used to start the application
  * Language: Java 13
@@ -17,4 +22,15 @@ public class Sam2021Application {
         SpringApplication.run(Sam2021Application.class, args);
     }
 
+    @Bean
+    public DataSource dataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUsername("sam2020");
+        dataSource.setPassword("root");
+        dataSource.setUrl("jdbc:mysql://localhost:3307/userdata");
+
+        return dataSource;
+    }
 }
