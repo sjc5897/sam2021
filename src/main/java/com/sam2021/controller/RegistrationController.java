@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static com.sam2021.security.Hasher.hashPass;
+
 /**
  * This the controller for the registration page.
  * Language: Java 13
@@ -31,12 +33,13 @@ public class RegistrationController {
                                      @RequestParam(name="password") String password,
                                      @RequestParam(name="f_name") String f_name,
                                      @RequestParam(name="l_name") String l_name){
+        password = hashPass(password);
         boolean suc= service.register(email,password,f_name,l_name,"author");
         if(suc){
-            return "/";
+            return "login";
         }
         else{
-            return "register"; 
+            return "register";
         }
     }
 
