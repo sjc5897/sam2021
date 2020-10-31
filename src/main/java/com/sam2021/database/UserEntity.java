@@ -13,6 +13,12 @@ public class UserEntity {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name="email")
+    private String email;
+
+    @Column(name="pwd")
+    private String pwd;
+
     @Column(name="firstName")
     private String firstname;
 

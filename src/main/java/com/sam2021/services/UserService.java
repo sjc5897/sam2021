@@ -17,8 +17,6 @@ public class UserService {
             @Autowired UserRepository userRepository
     ) {
         this.userRepository = userRepository;
-        userRepository.save(new UserEntity());
+        //userRepository.save(new UserEntity());
     }
-
-
 }
