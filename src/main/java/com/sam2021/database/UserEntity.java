@@ -25,10 +25,16 @@ public class UserEntity {
     @Column(name="lastName")
     private String lastname;
 
-    public UserEntity(Integer id, String firstname, String lastname){
+    @Column(name="role")
+    private String role;
+
+    public UserEntity(Integer id, String firstname, String lastname, String email, String pwd, String role){
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.email = email;
+        this.pwd = pwd;
+        this.role = role;
     }
 
     public UserEntity(){
