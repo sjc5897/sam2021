@@ -10,9 +10,6 @@ import javax.persistence.Table;
 public class UserEntity {
 
     @Id
-    @Column(name = "id")
-    private Integer id;
-
     @Column(name="email")
     private String email;
 
@@ -25,10 +22,15 @@ public class UserEntity {
     @Column(name="lastName")
     private String lastname;
 
-    public UserEntity(Integer id, String firstname, String lastname){
-        this.id = id;
+    @Column(name="role")
+    private String role;
+
+    public UserEntity(String email, String password, String firstname, String lastname, String role){
+        this.email = email;
+        this.pwd = password;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.role = role;
     }
 
     public UserEntity(){

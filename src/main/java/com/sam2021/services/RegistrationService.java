@@ -9,14 +9,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UserService {
+public class RegistrationService {
 
     private final UserRepository userRepository;
 
-    public UserService(
+    public RegistrationService(
             @Autowired UserRepository userRepository
     ) {
         this.userRepository = userRepository;
-        //userRepository.save(new UserEntity());
+        // userRepository.save(new UserEntity());
+    }
+    public boolean register(String email, String password, String firstname, String lastname, String role) {
+        userRepository.save(new UserEntity(email,password,firstname,lastname,role));
+        return true;
     }
 }
