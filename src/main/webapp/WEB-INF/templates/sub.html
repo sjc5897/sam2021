@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<header>
+    <div th:include="fragments/header :: header"> </div>
+</header>
+<body>
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Contact</th>
+            <th>Format</th>
+            <th>Version<th>
+        </tr>
+        </thead>
+        <tbody>
+            <td th:text="${submission.getTitle()}"></td>
+            <td th:text="${submission.getEmail()}"></td>
+            <td th:text="${submission.getFormat()}"></td>
+            <td th:text="${submission.getVersion()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</span>
+</html>

@@ -16,10 +16,12 @@
                     <th>Title</th>
                     <th>Contact</th>
                     <th>Format</th>
+                    <th>Version<th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="submission: ${submissions}">
+                <tr th:each="submission: ${submissions}"
+                    th:onclick="'window.location.href=\'/submission/' + ${submission.getId()} + '\''">
                         <td th:text="${submission.getTitle()}"></td>
                         <td th:text="${submission.getEmail()}"></td>
                         <td th:text="${submission.getFormat()}"></td>
@@ -33,4 +35,9 @@
     </form>
 
 </body>
+<script>
+    function rowClicked(value) {
+        location.href = "/myurl?sub_id=" + value;
+    }
+</script>
 </html>

@@ -42,5 +42,11 @@ public class SubmissionEntity {
     public String getFormat(){
         return this.format;
     }
+    public String getVersion(){
+        return this.version;
+    }
 
+    public Long getId(){
+        return this.id;
+    }
 }
