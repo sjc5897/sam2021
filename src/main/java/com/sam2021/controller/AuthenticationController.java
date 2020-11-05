@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import static com.sam2021.security.Hasher.hashPass;
 
@@ -53,31 +55,31 @@ public class AuthenticationController {
      * @return      A String representing html redirect
      */
     @RequestMapping(value="/login", method = RequestMethod.POST)
-    public String handleLogin(@RequestParam(name="uname") String name, @RequestParam(name="pw") String pw, Model model){
+    public String handleLogin(@RequestParam(name="uname") String name, @RequestParam(name="pw") String pw, Model model,
+                              RedirectAttributes redir){
         pw = hashPass(pw);
         UserEntity user = service.getUser(name);
-        System.out.println(user);
         if(user == null){
             model.addAttribute("error",true);
             return "login";
         }
         else if(user.authenticate(pw)){
-            model.addAttribute("user",user);
+            redir.addFlashAttribute("user",user);
             if(user.getRole().equals("author")){
-                return "author";
+                return "redirect:/author";
             }
             else if(user.getRole().equals("admin")){
-                return "admin";
+                return "redirect:/admin";
             }
             else if (user.getRole().equals("PCM")){
-                return "pcm";
+                return "redirect:/pcm";
             }
             else if (user.getRole().equals("PCC")){
-                return "pcc";
+                return "redirect:/pcc";
             }
             else{
                 model.addAttribute("error",true);
-                return "login";
+                return "redirect:/login";
             }
         }
         model.addAttribute("error",true);

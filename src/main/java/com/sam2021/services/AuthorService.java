@@ -20,4 +20,12 @@ public class AuthorService {
         }
 
     }
+    public boolean addNewSubmission(String email, String title, String format,String version){
+        try {
+            submissionRepo.save(new SubmissionEntity(email,title,format,version));
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

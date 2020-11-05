@@ -8,9 +8,29 @@
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
-    <div th:text="Hello ${user.getName()}">
-
-    </div>
+    <p th:text="'Hello ' +  ${user.getName()}"></p>
+    <span th:if="${submissions} != null" >
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Contact</th>
+                    <th>Format</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="submission: ${submissions}">
+                        <td th:text="${submission.getTitle()}"></td>
+                        <td th:text="${submission.getEmail()}"></td>
+                        <td th:text="${submission.getFormat()}"></td>
+                        <td th:text="${submission.getVersion()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </span>
+    <form action="/author/new" method="get">
+        <input type="submit" value="New Submission">
+    </form>
 
 </body>
 </html>

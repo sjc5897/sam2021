@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>SAM2021</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
+</head>
+<header>
+    <div th:include="fragments/header :: header"> </div>
+</header>
+<body>
+<div class="form">
+    <form method="POST" action="/author/new">
+        <label for="email">Contact Email:</label>
+        <input id="email" name="email" type="text" required><br>
+        <label for="title">Title:</label>
+        <input id="title" name="title" type="text" required><br>
+        <label for="format">File Format:</label>
+        <input id="format" name="format" type="text" required><br>
+        <label for="version">File Version:</label>
+        <input id="version" name="version" type="text" required><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</body>
+</html>

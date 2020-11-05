@@ -13,7 +13,7 @@
 <body>
 <div class="form">
     <p th:if="${{(param.reg_suc != null)}}">Successful Registration</p>
-    <p th:if="${{(param.error != null)}}"> Login Failed</p>
+    <p th:if="${error != null}"> Login Failed</p>
     <form method="POST" action="/login">
         <label for="uname">Email:</label>
         <input id="uname" name="uname" type="text" required><br>
