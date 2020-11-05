@@ -4,6 +4,7 @@ import com.sam2021.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,13 +33,15 @@ public class RegistrationController {
     public String handleRegistration(@RequestParam(name="email") String email,
                                      @RequestParam(name="password") String password,
                                      @RequestParam(name="f_name") String f_name,
-                                     @RequestParam(name="l_name") String l_name){
+                                     @RequestParam(name="l_name") String l_name, Model model){
         password = hashPass(password);
         boolean suc= service.register(email,password,f_name,l_name,"author");
         if(suc){
-            return "login";
+            model.addAttribute("reg_suc",true);
+            return "redirect:login";
         }
         else{
+            model.addAttribute("reg_suc", false);
             return "register";
         }
     }

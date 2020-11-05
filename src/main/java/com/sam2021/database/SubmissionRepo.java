@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, String> {
-    List<UserEntity> findAllById(Integer id );
-    List<UserEntity> findByEmail(String email);
+public interface SubmissionRepo extends JpaRepository<SubmissionEntity,String> {
+    List<SubmissionEntity> findAll();
+    List<SubmissionEntity> findAllByEmail(String email);
 }

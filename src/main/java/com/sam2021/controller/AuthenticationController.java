@@ -1,5 +1,6 @@
 package com.sam2021.controller;
 
+import com.sam2021.database.UserEntity;
 import com.sam2021.services.AuthenitcationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static com.sam2021.security.Hasher.hashPass;
 
 /**
  * This is a custom controller for login into the system
@@ -51,13 +54,33 @@ public class AuthenticationController {
      */
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public String handleLogin(@RequestParam(name="uname") String name, @RequestParam(name="pw") String pw, Model model){
-        if(service.validateUser(name,pw)){
-            model.addAttribute("name",name);
-            return "home";
-        }
-        else{
+        pw = hashPass(pw);
+        UserEntity user = service.getUser(name);
+        System.out.println(user);
+        if(user == null){
+            model.addAttribute("error",true);
             return "login";
         }
-
+        else if(user.authenticate(pw)){
+            model.addAttribute("user",user);
+            if(user.getRole().equals("author")){
+                return "author";
+            }
+            else if(user.getRole().equals("admin")){
+                return "admin";
+            }
+            else if (user.getRole().equals("PCM")){
+                return "pcm";
+            }
+            else if (user.getRole().equals("PCC")){
+                return "pcc";
+            }
+            else{
+                model.addAttribute("error",true);
+                return "login";
+            }
+        }
+        model.addAttribute("error",true);
+        return "login";
     }
 }

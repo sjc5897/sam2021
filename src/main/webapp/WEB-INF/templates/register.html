@@ -3,19 +3,20 @@
 <head>
     <title>SAM2021</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:href="@{/css/forms.css?<?php echo rand();?>}" rel="stylesheet"/>
+    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
 </head>
 <header>
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
 <div class="form">
+    <p th:if="${reg_suc != null}">Registration Failed, please try again </p>
     <form method="POST" action="/register">
         <label for="email">Email:</label>
         <input id="email" name="email" type="text" required><br>
         <label for="password">Password:</label>
         <input id="password" name="password" type="password" required><br>
-        <label for="f_name">Fist Name:</label>
+        <label for="f_name">First Name:</label>
         <input id="f_name" name="f_name" type="text" required><br>
         <label for="l_name">Last Name:</label>
         <input id="l_name" name="l_name" type="text" required><br>

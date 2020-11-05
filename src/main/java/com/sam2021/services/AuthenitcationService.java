@@ -1,6 +1,11 @@
 package com.sam2021.services;
 
+import com.sam2021.database.UserEntity;
+import com.sam2021.database.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * The service for Login, this assists the controller in authentication
@@ -12,14 +17,22 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AuthenitcationService {
+    @Autowired
+    UserRepository userRepository;
+
     /**
      * This will assist the controller in user Authentication, currently spoofed
-     * @param uid   String representing the user id
-     * @param pw    String representing the user password
-     * @return      Boolean representing if the user is authenticated
+     *
+     * @param uid String representing the user id
+     * @return Boolean representing if the user is authenticated
      */
-    public boolean validateUser(String uid, String pw){
+    public UserEntity getUser(String uid) {
         // TODO: Implement validation for real
-        return uid.equals("Stephen") && pw.equals("abc123");
+        List<UserEntity> res = userRepository.findByEmail(uid);
+        if (res.size() == 0) {
+            return null;
+        } else {
+            return res.get(0);
+        }
     }
 }

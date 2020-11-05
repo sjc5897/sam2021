@@ -1,12 +1,16 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <header>
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
+    <div th:text="Hello ${user.getName()}">
+
+    </div>
+
 </body>
 </html>
