@@ -27,9 +27,9 @@ public class Sam2021Application {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUsername("sam2020");
-        dataSource.setPassword("root");
-        dataSource.setUrl("jdbc:mysql://localhost:3307/userdata");
+        //dataSource.setUsername("sam2020");
+        //dataSource.setPassword("root");
+        dataSource.setUrl("jdbc:mysql://bac0a07245e23f:ed3f0950@us-cdbr-east-02.cleardb.com/heroku_62816df5dd20b0a?reconnect=true");
 
         return dataSource;
     }
