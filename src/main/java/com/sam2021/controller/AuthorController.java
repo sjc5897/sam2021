@@ -21,10 +21,9 @@ public class AuthorController {
     @RequestMapping(value="/author", method= RequestMethod.GET)
     public String getAuthorPage(@ModelAttribute("user") UserEntity user, Model model){
 
-        if(user == null){
+        if(user.getEmail() == null){
             return "redirect:/login";
         }
-
         List<SubmissionEntity> submissions = service.getAuthorsSubmissions(user.getEmail());
         if(submissions.size() != 0){
             model.addAttribute("submissions", submissions);
