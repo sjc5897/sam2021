@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -46,11 +48,28 @@ public class AuthorController {
     }
 
     @RequestMapping(value="/author/new", method = RequestMethod.POST)
-    public String submit(@RequestParam("email")String email, @RequestParam("title")String title,
-                         @RequestParam("format") String format, @RequestParam("version") String version,
-                         @ModelAttribute("user") UserEntity user,Model model){
+    public String submit(RedirectAttributes redirectAttributes,
+                         @RequestParam("file") MultipartFile file,
+                         @RequestParam("email")String email,
+                         @RequestParam("title")String title,
+                         @RequestParam("format") String format,
+                         @RequestParam("authorList") String authorList,
+                         @RequestParam(value = "version", required = false) String version,
+                         @ModelAttribute("user") UserEntity user,
+                         Model model){
+
         model.addAttribute("user",user);
-        service.addNewSubmission(email,title,format,version);
+
+
+        //contact email must be a registered email
+        //if revision, title must exist
+        if(version != null){
+            redirectAttributes.addFlashAttribute("message", "Error: paper title must already exist to");
+            return "redirect:/author/new";
+        }
+
+        //service.addNewSubmission(email,title,file.getOriginalFilename(),"."+format,authorList,0,0);
+        service.uploadFile(file);
         return "author";
     }
 

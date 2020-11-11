@@ -10,4 +10,5 @@ public interface SubmissionRepo extends JpaRepository<SubmissionEntity,String> {
     List<SubmissionEntity> findAll();
     List<SubmissionEntity> findAllByEmail(String email);
     List<SubmissionEntity> findById(Long Id);
+    List<SubmissionEntity> findByTitle(String title);
 }

@@ -10,16 +10,32 @@
 </header>
 <body>
 <div class="form">
-    <form method="POST" action="/author/new">
+    <form method="POST" action="/author/new" enctype="multipart/form-data">
+
         <label for="email">Contact Email:</label>
         <input id="email" name="email" type="text" required><br>
-        <label for="title">Title:</label>
+
+        <label for="authorList">Authors to credit:</label>
+        <input id="authorList" name="authorList" type="text" required><br>
+
+        <label for="title">Paper Title:</label>
         <input id="title" name="title" type="text" required><br>
+
         <label for="format">File Format:</label>
-        <input id="format" name="format" type="text" required><br>
-        <label for="version">File Version:</label>
-        <input id="version" name="version" type="text" required><br>
+        <select id="format" name="format">
+            <option value="pdf">.pdf</option>
+            <option value="doc">.doc</option>
+            <option value="docx">.docx</option>
+        </select><br>
+
+        <label for="version">Is this file a new version of an existing file:</label>
+        <input id="version" name="version" type="checkbox"><br>
+
+        <input type="file" name="file" accept=".pdf,.doc,.docx"required/> <br/><br/>
         <input type="submit" value="Submit">
+        <div th:if="${message}">
+            <h2 th:text="${message}"/>
+        </div>
     </form>
 </div>
 </body>
