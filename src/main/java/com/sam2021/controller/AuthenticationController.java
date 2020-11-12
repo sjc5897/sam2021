@@ -93,4 +93,12 @@ public class AuthenticationController extends HttpServlet {
         model.addAttribute("error",true);
         return "login";
     }
+    @RequestMapping(value="logout",method= RequestMethod.POST)
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        if(!session.isNew()){
+            session.invalidate();
+        }
+        return "redirect:/login";
+    }
 }
