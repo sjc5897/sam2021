@@ -7,6 +7,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
-    List<UserEntity> findAllById(Integer id );
+    List<UserEntity> findAllById(Long id );
     List<UserEntity> findByEmail(String email);
+
 }
