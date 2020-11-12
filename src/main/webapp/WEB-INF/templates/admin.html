@@ -8,7 +8,7 @@
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
-<p th:text="'Hello ' +  ${user.getName()}"></p>
+<p th:text="'Hello ' +  ${name}"></p>
 <span th:if="${users} != null" >
         <table>
             <thead>
@@ -19,10 +19,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="user_e: ${users}">
+                <tr th:each="user_e: ${users}" >
                         <td th:text="${user_e.getEmail()}"></td>
                         <td th:text="${user_e.getName()}"></td>
                         <td th:text="${user_e.getRole()}"></td>
+                        <td><a th:href="@{/admin/edit/} + ${user_e.getid()}">Edit</a></td>
                 </tr>
             </tbody>
         </table>

@@ -7,7 +7,8 @@
     </head>
     <ul>
         <li><h1 class="logo">SAM2021</h1></li>
-        <li class="navbutton"><a href="/login" th:method="GET">Login</a> </li>
+        <li class="navbutton" th:if="${session.isEmpty()}"><a href="/login" th:method="GET">Login</a> </li>
+        <li class="navbutton" th:if="${!session.isEmpty()}"><a href="/logout" th:method="GET">Logout</a> </li>
     </ul>
 </header>
 <body>

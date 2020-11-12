@@ -2,6 +2,8 @@ package com.sam2021.services;
 
 import com.sam2021.database.SubmissionEntity;
 import com.sam2021.database.SubmissionRepo;
+import com.sam2021.database.UserEntity;
+import com.sam2021.database.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,9 +21,19 @@ import java.util.List;
 public class AuthorService {
     @Autowired
     SubmissionRepo submissionRepo;
+    UserRepository userRepository;
 
     @Autowired
     ServletContext context;
+
+    public UserEntity getAuthor(String email){
+        try{
+            return userRepository.findByEmail(email).get(0);
+        }
+        catch (Exception ex){
+            return null;
+        }
+    }
 
     public List<SubmissionEntity> getAuthorsSubmissions(String email){
         try {
