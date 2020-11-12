@@ -10,17 +10,17 @@ public class UserEntity {
     @Column(name="id")
     private Long id;
 
+    @Column(name="firstname")
+    private String firstname;
+
+    @Column(name="lastname")
+    private String lastname;
+
     @Column(name="email")
     private String email;
 
     @Column(name="pwd")
     private String pwd;
-
-    @Column(name="firstName")
-    private String firstname;
-
-    @Column(name="lastName")
-    private String lastname;
 
     @Column(name="role")
     private String role;
