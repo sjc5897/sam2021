@@ -35,6 +35,9 @@ public class AuthorService {
         }
     }
 
+    @Autowired
+    ServletContext context;
+
     public List<SubmissionEntity> getAuthorsSubmissions(String email){
         try {
             return submissionRepo.findAllByEmail(email);
