@@ -27,10 +27,10 @@ public class AuthorController {
             return "redirect:/login";
         }
 
-        List<SubmissionEntity> submissions = service.getAuthorsSubmissions(user.getEmail());
-        if(submissions.size() != 0){
-            model.addAttribute("submissions", submissions);
-        }
+        //List<SubmissionEntity> submissions = service.getAuthorsSubmissions(user.getEmail());
+        //if(submissions.size() != 0){
+            //model.addAttribute("submissions", submissions);
+        //}
         model.addAttribute("user",user);
         return "author";
     }
