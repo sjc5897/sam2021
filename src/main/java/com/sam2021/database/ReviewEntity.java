@@ -56,17 +56,15 @@ public class ReviewEntity {
         return reviewerId;
     }
 
-    public Long getPaper_id() {
-        return paperId;
+    public Long getPaper_id() { return paperId;}
 
-    }
     public int getRating() {
         return rating;
     }
 
-    public String getComments() {
-        return comments;
-    }
+    public String getComments() { return comments; }
+
+    public String getCstate() {return cstate;}
 
     //setters
     public void setId(Long id) {
@@ -84,4 +82,5 @@ public class ReviewEntity {
     public void setComments(String comments) {
         this.comments = comments;
     }
+    public void setCstate(String state){this.cstate = state;}
 }

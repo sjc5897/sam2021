@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -111,8 +112,74 @@ public class PCMController extends HttpServlet {
     }
 
     @RequestMapping(value="/pcm/review/{id}", method= RequestMethod.GET)
-    public String getPCMReviewPage(@PathVariable("id") Long paper_id,HttpServletRequest request){
-        return "";
+    public String getPCMReviewPage(@PathVariable("id") Long review_id, Model model, HttpServletRequest request){
+        //Authenticate
+        Long uid;
+        String role;
+        try {
+            HttpSession session = request.getSession();
+            if(session.isNew()){
+                return "redirect:/login";
+            }
+            uid = (Long) session.getAttribute("uid");
+            role = (String) session.getAttribute("role");
+            if(!role.equals("pcm")){
+                return "redirect:/" + role;
+            }
+        }
+        catch(Exception ex){
+            return "redirect:/login";
+        }
+        ReviewEntity reviewEntity = service.getReviewById(review_id);
+        if(reviewEntity == null || reviewEntity.getReviewer_id() != uid || reviewEntity.getCstate().equals("REQUESTED")){
+            model.addAttribute("error", "Invalid Review Request");
+            return "redirect:/" + role;
+        }
+        SubmissionEntity submissionEntity = service.getSubmissionById(reviewEntity.getPaper_id());
+
+        model.addAttribute("submission", submissionEntity);
+        model.addAttribute("review",reviewEntity);
+
+        return "sub";
+    }
+    @RequestMapping(value="/pcm/review/{id}", method= RequestMethod.POST)
+    public String submitReviewPage(@PathVariable("id") Long review_id, @RequestParam("rating") int rating,
+                                   @RequestParam("comments") String comments, @RequestParam("action") String action,
+                                   Model model, HttpServletRequest request){
+        //Authenticate
+        Long uid;
+        String role;
+        try {
+            HttpSession session = request.getSession();
+            if(session.isNew()){
+                return "redirect:/login";
+            }
+            uid = (Long) session.getAttribute("uid");
+            role = (String) session.getAttribute("role");
+            if(!role.equals("pcm")){
+                return "redirect:/" + role;
+            }
+        }
+        catch(Exception ex){
+            return "redirect:/login";
+        }
+        ReviewEntity reviewEntity = service.getReviewById(review_id);
+        if(reviewEntity == null || reviewEntity.getReviewer_id() != uid || reviewEntity.getCstate().equals("REQUESTED")){
+            model.addAttribute("error", "Invalid Review Request");
+            return "redirect:/" + role;
+        }
+        if(action.equals("submit")){
+            reviewEntity.setCstate("SUBMITTED");
+        }
+        reviewEntity.setRating(rating);
+        reviewEntity.setComments(comments);
+        if(service.update(reviewEntity)){
+            model.addAttribute("success",true);
+            return "redirect:/pcm/review/" + reviewEntity.getId();
+        }else{
+            model.addAttribute("success",false);
+            return "redirect:/pcm/review/" + reviewEntity.getId();
+        }
     }
 
 }

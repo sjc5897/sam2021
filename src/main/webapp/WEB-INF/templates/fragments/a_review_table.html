@@ -20,7 +20,7 @@
             <td th:text="${a_review.getPaper_id()}"></td>
             <td th:text="${a_review.getRating()}"></td>
             <td th:text="${a_review.getComments()}"></td>
-            <td><a th:href="@{/pcm/review/} + ${a_review.getPaper_id()}">Review</a></td>
+            <td><a th:href="@{/pcm/review/} + ${a_review.getId()}">Review</a></td>
         </tr>
         </tbody>
     </table>

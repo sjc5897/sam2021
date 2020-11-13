@@ -60,6 +60,14 @@ public class PCMService {
          }
      }
 
+    public ReviewEntity getReviewById(Long id){
+        try{
+            return reviewRepo.findById(id).get(0);
+        }catch (Exception ex){
+            return null;
+        }
+    }
+
      public boolean isRequestedAlready(Long paper_id, Long uid){
         try{
             List<ReviewEntity> res = reviewRepo.findAllByReviewerIdAndPaperId(uid, paper_id);
@@ -69,6 +77,15 @@ public class PCMService {
             return true;
         }catch (Exception ex){
             return true;
+        }
+     }
+
+     public boolean update(ReviewEntity reviewEntity){
+        try{
+            reviewRepo.save(reviewEntity);
+            return true;
+        }catch (Exception ex){
+            return false;
         }
      }
 

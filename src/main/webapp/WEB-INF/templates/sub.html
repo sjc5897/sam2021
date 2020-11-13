@@ -25,6 +25,8 @@
         </tr>
         </tbody>
     </table>
+
+    <span th:if="${review != null}" th:include="/fragments/review_form :: review-form"></span>
 </body>
 </span>
 </html>
