@@ -26,16 +26,17 @@ public class PCMService {
 
     public List<SubmissionEntity> getAllSubmitted(){
         try{
-            return submissionRepo.findAllByState(SubmissionEntity.State.SUBMITTED);
+            return submissionRepo.getAllByCstate("SUBMITTED");
         }
         catch(Exception ex){
+            System.out.println(ex.getCause());
             return null;
         }
     }
 
     public List<ReviewEntity> getAllAssignedReviews(Long id){
         try{
-            return reviewRepo.findAllByReviewerIdAndState(id, ReviewEntity.State.ASSIGNED);
+            return reviewRepo.getAllByReviewerIdAndCstate(id, "ASSIGNED");
         }
         catch(Exception ex){
             return null;
@@ -43,9 +44,10 @@ public class PCMService {
     }
     public List<ReviewEntity> getAllSubmittedReviews(Long id){
         try{
-            return reviewRepo.findAllByReviewerIdAndState(id, ReviewEntity.State.SUBMITTED);
+            return reviewRepo.getAllByReviewerIdAndCstate(id, "SUBMITTED");
         }
         catch(Exception ex){
+            System.out.println(ex.getCause());
             return null;
         }
     }

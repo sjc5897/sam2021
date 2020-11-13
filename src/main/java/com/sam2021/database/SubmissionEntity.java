@@ -1,18 +1,11 @@
 package com.sam2021.database;
 
-import org.springframework.stereotype.Controller;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name="submission")
 public class SubmissionEntity {
-    public enum State{
-        SUBMITTED,
-        ASSIGNED,
-        REVIEWED,
-        RELEASED
-    }
+
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -31,7 +24,7 @@ public class SubmissionEntity {
     private String title;
 
     @Column(name="file_name")
-    private String file_name;
+    private String fileName;
 
     @Column(name="format")
     private String format;
@@ -39,18 +32,18 @@ public class SubmissionEntity {
     @Column(name="version")
     private int version;
 
-    @Column(name="state")
-    private State state;
+    @Column(name="c_state")
+    private String cstate;
 
     public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, int author_id, String c_state){
         this.email = email;
         this.title = title;
-        this.file_name = file_name;
+        this.fileName = file_name;
         this.format = format;
         this.version = version;
         this.author_list = author_list;
         this.author_id = author_id;
-        this.state = State.valueOf(c_state);
+        this.cstate = c_state;
     }
 
     public SubmissionEntity(){
@@ -63,8 +56,8 @@ public class SubmissionEntity {
     public String getEmail(){
         return this.email;
     }
-    public String getFile_name(){
-        return this.file_name;
+    public String getFileName(){
+        return this.fileName;
     }
     public String getFormat(){ return this.format; }
     public int getVersion(){

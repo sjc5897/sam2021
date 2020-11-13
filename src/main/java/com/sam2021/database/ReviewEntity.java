@@ -13,19 +13,15 @@ import javax.persistence.*;
 @Entity
 @Table(name="review")
 public class ReviewEntity {
-    public enum State{
-        SUBMITTED,
-        ASSIGNED
-    }
     //Attributes
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 
-    @Column(name="reviewerId")
+    @Column(name="reviewer_id")
     private Long reviewerId;
 
-    @Column(name="paperId")
+    @Column(name="paper_id")
     private Long paperId;
 
     @Column(name="rating")
@@ -34,8 +30,8 @@ public class ReviewEntity {
     @Column(name="comments")
     private String comments;
 
-    @Column(name="state")
-    private State state;
+    @Column(name="c_state")
+    private String cstate;
 
     //constructor
     public ReviewEntity(Long reviewer_id, Long paper_id, int rating, String comments){
@@ -43,6 +39,9 @@ public class ReviewEntity {
         this.paperId = paper_id;
         this.rating = rating;
         this.comments = comments;
+    }
+    public ReviewEntity(){
+
     }
 
     //getters

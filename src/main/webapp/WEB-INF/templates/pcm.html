@@ -9,11 +9,11 @@
 </header>
 <body>
 <p th:text="'Hello ' +  ${name}"></p>
-    <span th:include="fragments/s_review_table :: s_review_table">
+    <span th:if="${s_reviews} != null" th:include="fragments/s_review_table :: s_review_table">
     </span>
-    <span th:include="fragments/a_review_table :: a_review_table">
+    <span th:if="${a_reviews} != null" th:include="fragments/a_review_table :: a_review_table">
     </span>
-    <span th:include="fragments/s_paper_table :: s_paper_table ">
+    <span th:if="${s_papers} != null" th:include="fragments/s_paper_table :: s_paper_table ">
     </span>
 </body>
 </body>
