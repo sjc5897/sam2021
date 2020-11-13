@@ -40,7 +40,7 @@ public class SubmissionEntity {
     private int version;
 
     @Column(name="state")
-    private State c_state;
+    private State state;
 
     public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, int author_id, String c_state){
         this.email = email;
@@ -50,7 +50,7 @@ public class SubmissionEntity {
         this.version = version;
         this.author_list = author_list;
         this.author_id = author_id;
-        this.c_state = State.valueOf(c_state);
+        this.state = State.valueOf(c_state);
     }
 
     public SubmissionEntity(){
