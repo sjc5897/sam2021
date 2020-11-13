@@ -7,6 +7,13 @@ import javax.persistence.*;
 @Entity
 @Table(name="submission")
 public class SubmissionEntity {
+    public enum State{
+        SUBMITTED,
+        ASSIGNED,
+        REVIEWED,
+        RELEASED
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
@@ -32,7 +39,10 @@ public class SubmissionEntity {
     @Column(name="version")
     private int version;
 
-    public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, int author_id){
+    @Column(name="state")
+    private State c_state;
+
+    public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, int author_id, String c_state){
         this.email = email;
         this.title = title;
         this.file_name = file_name;
@@ -40,6 +50,7 @@ public class SubmissionEntity {
         this.version = version;
         this.author_list = author_list;
         this.author_id = author_id;
+        this.c_state = State.valueOf(c_state);
     }
 
     public SubmissionEntity(){
@@ -65,3 +76,4 @@ public class SubmissionEntity {
     public int getAuthor_id() { return author_id; }
     public String getAuthor_list() { return author_list; }
 }
+

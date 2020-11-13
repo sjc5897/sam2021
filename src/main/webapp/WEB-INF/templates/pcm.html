@@ -8,6 +8,28 @@
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
-pcm
+<p th:text="'Hello ' +  ${name}"></p>
+
+    <span th:if="${s_papers} != null" >
+        <h1>Submitted Papers</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author Email</th>
+                        <th>version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="s_paper: ${s_papers}" >
+                            <td th:text="${s_paper.getTitle()}"></td>
+                            <td th:text="${s_papaer.getEmail()}"></td>
+                            <td th:text="${s_papaer.getVersion()}"></td>
+                            <td><a th:href="@{/pcm/review/} + ${s_paper.getid()}">Review</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </span>
+</body>
 </body>
 </html>
