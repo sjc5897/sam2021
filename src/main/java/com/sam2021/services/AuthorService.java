@@ -46,7 +46,7 @@ public class AuthorService {
     }
     public boolean addNewSubmission(String email, String title, String file_name, String format,String author_list,int version, int author_id){
         try {
-            submissionRepo.save(new SubmissionEntity(email,title,file_name,format,author_list,version,author_id));
+            submissionRepo.save(new SubmissionEntity(email,title,file_name,format,author_list,version,author_id,"SUBMITTED"));
             return true;
         }catch (Exception e){
             return false;
