@@ -17,7 +17,7 @@ CREATE TABLE submission
     version varchar(255) null,
     constraint submission_id_unidex
         unique(id),
-    state VARCHAR(255))
+    cstate VARCHAR(255))
 
 create table review
 (
@@ -26,7 +26,7 @@ create table review
 	paperId int null,
 	rating int null,
 	comments VARCHAR(255) null,
-    state VARCHAR(255),
+    cstate VARCHAR(255),
 	constraint review_pk
 		primary key (id),
 	constraint paperId

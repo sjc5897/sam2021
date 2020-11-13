@@ -8,7 +8,7 @@
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
-    <p th:text="'Hello ' +  ${user.getName()}"></p>
+    <p th:text="'Hello ' +  ${name}"></p>
     <span th:if="${submissions} != null" >
         <table>
             <thead>

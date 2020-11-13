@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -21,24 +23,32 @@ public class AuthorController {
     AuthorService service;
 
     @RequestMapping(value="/author", method= RequestMethod.GET)
-    public String getAuthorPage(@ModelAttribute("user") UserEntity user, Model model){
+    public String getAuthorPage(@ModelAttribute("user") UserEntity user, Model model, HttpServletRequest request){
 
-        if(user == null){
+        HttpSession session = request.getSession();
+        if(session.isNew()){
             return "redirect:/login";
         }
+        String uid = (String) session.getAttribute("uid");
+        String role = (String) session.getAttribute("role");
+        if(!role.equals("author")){
+            return "redirect:/" + role;
+        }
 
-        //List<SubmissionEntity> submissions = service.getAuthorsSubmissions(user.getEmail());
-        //if(submissions.size() != 0){
-            //model.addAttribute("submissions", submissions);
-        //}
+        user = service.getAuthor((String)session.getAttribute("uid"));
+        List<SubmissionEntity> submissions = service.getAuthorsSubmissions(user.getEmail());
+        if(submissions.size() != 0){
+            model.addAttribute("submissions", submissions);
+        }
         model.addAttribute("user",user);
+        model.addAttribute("name",user.getName());
         return "author";
     }
 
     @RequestMapping(value="/author",method= RequestMethod.POST)
     public String handleAuthorSubmit(@ModelAttribute("user") UserEntity user, Model model){
         model.addAttribute("user", user);
-        return "redirect:/author/new";
+        return "redirect:/author";
     }
 
     @RequestMapping(value="/author/new", method = RequestMethod.GET)
@@ -49,6 +59,7 @@ public class AuthorController {
 
     @RequestMapping(value="/author/new", method = RequestMethod.POST)
     public String submit(RedirectAttributes redirectAttributes,
+                         HttpServletRequest request,
                          @RequestParam("file") MultipartFile file,
                          @RequestParam("email")String email,
                          @RequestParam("title")String title,
@@ -58,19 +69,22 @@ public class AuthorController {
                          @ModelAttribute("user") UserEntity user,
                          Model model){
 
-        model.addAttribute("user",user);
-
-
-        //contact email must be a registered email
-        //if revision, title must exist
-        if(version != null){
-            redirectAttributes.addFlashAttribute("message", "Error: paper title must already exist to");
-            return "redirect:/author/new";
+        HttpSession session = request.getSession();
+        if(session.isNew()){
+            return "redirect:/login";
+        }
+        String uid = (String) session.getAttribute("uid");
+        String role = (String) session.getAttribute("role");
+        if(!role.equals("author")){
+            return "redirect:/" + role;
         }
 
-        //service.addNewSubmission(email,title,file.getOriginalFilename(),"."+format,authorList,0,0);
+        user = service.getAuthor((String)session.getAttribute("uid"));
+        model.addAttribute("user",user);
+
+        service.addNewSubmission(email,title,file.getOriginalFilename(),format,authorList,Integer.parseInt(version),user.getid().intValue());
         service.uploadFile(file);
-        return "author";
+        return "redirect:/author";
     }
 
 }

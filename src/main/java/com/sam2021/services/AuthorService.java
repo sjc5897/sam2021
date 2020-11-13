@@ -21,6 +21,8 @@ import java.util.List;
 public class AuthorService {
     @Autowired
     SubmissionRepo submissionRepo;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired

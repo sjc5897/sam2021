@@ -5,8 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="submission")
 public class SubmissionEntity {
-
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
@@ -35,7 +33,7 @@ public class SubmissionEntity {
     @Column(name="c_state")
     private String cstate;
 
-    public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, int author_id, String c_state){
+    public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, int author_id, String cstate){
         this.email = email;
         this.title = title;
         this.fileName = file_name;
@@ -66,4 +64,3 @@ public class SubmissionEntity {
     public int getAuthor_id() { return authorId; }
     public String getAuthor_list() { return authorList; }
 }
-
