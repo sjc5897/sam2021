@@ -22,7 +22,7 @@ public class PCCController {
         if(session.isNew()){
             return "redirect:/login";
         }
-        String uid = (String) session.getAttribute("uid");
+        Long uid = (Long) session.getAttribute("uid");
         String role = (String) session.getAttribute("role");
         if(!role.equals("pcc")){
             return "redirect:/" + role;
