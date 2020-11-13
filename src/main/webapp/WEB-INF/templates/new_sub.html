@@ -28,8 +28,8 @@
             <option value="docx">.docx</option>
         </select><br>
 
-        <label for="version">Is this file a new version of an existing file:</label>
-        <input id="version" name="version" type="checkbox"><br>
+        <label for="version">File Version:</label>
+        <input id="version" name="version" type="number" min="0" step="1" required><br>
 
         <input type="file" name="file" accept=".pdf,.doc,.docx"required/> <br/><br/>
         <input type="submit" value="Submit">
