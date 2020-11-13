@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepo extends JpaRepository<ReviewEntity,String> {
-    List<ReviewEntity> findAllByReviewer_idAndState(Long id, ReviewEntity.State state);
+    List<ReviewEntity> findAllByReviewerIdAndState(Long id, ReviewEntity.State state);
 }

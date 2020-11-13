@@ -32,7 +32,7 @@ public class PCMController {
         if(session.isNew()){
             return "redirect:/login";
         }
-        String uid = (String) session.getAttribute("uid");
+        Long uid = (Long) session.getAttribute("uid");
         String role = (String) session.getAttribute("role");
         if(!role.equals("pcm")){
             return "redirect:/" + role;
@@ -40,8 +40,10 @@ public class PCMController {
 
         // Get Submitted Papers
         model.addAttribute("s_papers", service.getAllSubmitted());
-        // Get Reviews
-        model.addAttribute("r_papers", service.getUserReview(uid));
+        // Get Assigned Reviews
+        model.addAttribute("a_review", service.getAllAssignedReviews(uid));
+        // Get Submitted Reviews
+        model.addAttribute("s_review",service.getAllSubmittedReviews(uid));
         return "pcm";
     }
 

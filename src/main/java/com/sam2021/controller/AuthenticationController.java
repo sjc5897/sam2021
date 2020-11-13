@@ -72,7 +72,8 @@ public class AuthenticationController extends HttpServlet {
                     session.invalidate();
                 }
                 HttpSession newSession = request.getSession();
-                newSession.setAttribute("uid", user.getEmail());
+                newSession.setAttribute("email", user.getEmail());
+                newSession.setAttribute("uid", user.getid());
                 newSession.setAttribute("role", user.getRole());
 
                 if (user.getRole().equals("author")) {

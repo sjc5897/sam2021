@@ -26,7 +26,7 @@ public class PCMService {
 
     public List<SubmissionEntity> getAllSubmitted(){
         try{
-            return submissionRepo.findAllByC_state(SubmissionEntity.State.SUBMITTED);
+            return submissionRepo.findAllByState(SubmissionEntity.State.SUBMITTED);
         }
         catch(Exception ex){
             return null;
@@ -35,7 +35,7 @@ public class PCMService {
 
     public List<ReviewEntity> getAllAssignedReviews(Long id){
         try{
-            return reviewRepo.findAllByReviewer_idAndState(id, ReviewEntity.State.ASSIGNED);
+            return reviewRepo.findAllByReviewerIdAndState(id, ReviewEntity.State.ASSIGNED);
         }
         catch(Exception ex){
             return null;
@@ -43,7 +43,7 @@ public class PCMService {
     }
     public List<ReviewEntity> getAllSubmittedReviews(Long id){
         try{
-            return reviewRepo.findAllByReviewer_idAndState(id, ReviewEntity.State.SUBMITTED);
+            return reviewRepo.findAllByReviewerIdAndState(id, ReviewEntity.State.SUBMITTED);
         }
         catch(Exception ex){
             return null;

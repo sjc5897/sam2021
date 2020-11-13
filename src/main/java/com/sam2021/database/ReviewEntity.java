@@ -22,11 +22,11 @@ public class ReviewEntity {
     @Column(name="id")
     private Long id;
 
-    @Column(name="reviewer_id")
-    private Long reviewer_id;
+    @Column(name="reviewerId")
+    private Long reviewerId;
 
-    @Column(name="paper_id")
-    private Long paper_id;
+    @Column(name="paperId")
+    private Long paperId;
 
     @Column(name="rating")
     private int rating;
@@ -35,12 +35,12 @@ public class ReviewEntity {
     private String comments;
 
     @Column(name="state")
-    private State c_state;
+    private State state;
 
     //constructor
     public ReviewEntity(Long reviewer_id, Long paper_id, int rating, String comments){
-        this.reviewer_id = reviewer_id;
-        this.paper_id = paper_id;
+        this.reviewerId = reviewer_id;
+        this.paperId = paper_id;
         this.rating = rating;
         this.comments = comments;
     }
@@ -51,11 +51,11 @@ public class ReviewEntity {
     }
 
     public Long getReviewer_id() {
-        return reviewer_id;
+        return reviewerId;
     }
 
     public Long getPaper_id() {
-        return paper_id;
+        return paperId;
 
     }
     public int getRating() {
@@ -71,10 +71,10 @@ public class ReviewEntity {
         this.id = id;
     }
     public void setReviewer_id(Long reviewer_id) {
-        this.reviewer_id = reviewer_id;
+        this.reviewerId = reviewer_id;
     }
     public void setPaper_id(Long paper_id) {
-        this.paper_id = paper_id;
+        this.paperId = paper_id;
     }
     public void setRating(int rating) {
         this.rating = rating;

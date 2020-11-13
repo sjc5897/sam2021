@@ -9,27 +9,12 @@
 </header>
 <body>
 <p th:text="'Hello ' +  ${name}"></p>
-
-    <span th:if="${s_papers} != null" >
-        <h1>Submitted Papers</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Author Email</th>
-                        <th>version</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="s_paper: ${s_papers}" >
-                            <td th:text="${s_paper.getTitle()}"></td>
-                            <td th:text="${s_papaer.getEmail()}"></td>
-                            <td th:text="${s_papaer.getVersion()}"></td>
-                            <td><a th:href="@{/pcm/review/} + ${s_paper.getid()}">Review</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </span>
+    <span th:include="fragments/s_review_table :: s_review_table">
+    </span>
+    <span th:include="fragments/a_review_table :: a_review_table">
+    </span>
+    <span th:include="fragments/s_paper_table :: s_paper_table ">
+    </span>
 </body>
 </body>
 </html>
