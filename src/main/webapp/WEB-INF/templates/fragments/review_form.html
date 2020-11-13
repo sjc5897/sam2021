@@ -3,22 +3,25 @@
 <head>
     <title>SAM2021</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:href="@{../../css/forms.css}" rel="stylesheet"/>
+
 </head>
 <body>
     <div class="form" th:fragment="review-form">
-        <p th:if="${param.success != null && param.success==true}">Review Successfully updated</p>
-        <p th:if="${param.success != null && param.success==false}">Review Updated Failed, please try again</p>
+        <span th:if="${param.success != null}">
+            <p th:if="${param.success==true}">Review Successfully updated</p>
+            <p th:unless="${param.success == false}">Review Updated Failed, please try again</p>
+        </span>
+        <h1>Review Form:</h1>
         <form method="POST" th:action="@{/pcm/review/} + ${review.getId()}">
             <label for="rating">Rating out of 10:</label>
             <input id="rating" name="rating" type="number" max="10" th:value="${review.getRating()}" required><br>
             <label for="comments">Comments: </label>
-            <input th:value="${review.getComments()}" id="comments" name="comments" type="text-area" maxlength="255" required><br>
+            <textarea th:value="${review.getComments()}" id="comments" name="comments" type="text" maxlength="255" required><br>
             <select th:if="${review.getCstate().equals('ASSIGNED')}" class="input" id="action" name="action" required>
                 <option class="opt" value="save">Save</option>
                 <option class="opt" value="submit">Submit</option>
             </select>
-            <input type="submit" value="Save" onclick="confirm('Confirm Review?')">
+            <input th:if="${review.getCstate().equals('ASSIGNED')}" type="submit" value="Save" onclick="confirm('Confirm Review?')">
         </form>
     </div>
 </body>

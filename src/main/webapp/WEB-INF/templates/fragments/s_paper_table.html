@@ -20,7 +20,7 @@
                             <td th:text="${s_paper.getTitle()}"></td>
                             <td th:text="${s_paper.getEmail()}"></td>
                             <td th:text="${s_paper.getVersion()}"></td>
-                            <td><a th:href="@{/pcm/request/} + ${s_paper.getId()}">Request Review</a></td>
+                            <td class="navtd"><a th:href="@{/pcm/request/} + ${s_paper.getId()}">Request Review</a></td>
                     </tr>
                 </tbody>
             </table>

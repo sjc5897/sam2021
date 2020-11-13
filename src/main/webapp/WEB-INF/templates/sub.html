@@ -6,6 +6,8 @@
 </head>
 <header>
     <div th:include="fragments/header :: header"> </div>
+    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
 </header>
 <body>
     <table>
@@ -26,7 +28,7 @@
         </tbody>
     </table>
 
-    <span th:if="${review != null}" th:include="/fragments/review_form :: review-form"></span>
+    <div th:if="${review != null}" th:include="/fragments/review_form :: review-form"></div>
 </body>
 </span>
 </html>
