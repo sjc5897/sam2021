@@ -30,15 +30,18 @@ public class ReviewEntity {
     @Column(name="comments")
     private String comments;
 
+    // STATES ARE: REQUESTED, ASSIGNED, SUBMITTED
     @Column(name="c_state")
     private String cstate;
 
     //constructor
-    public ReviewEntity(Long reviewer_id, Long paper_id, int rating, String comments){
+    public ReviewEntity(Long reviewer_id, Long paper_id, int rating, String comments, String cstate){
         this.reviewerId = reviewer_id;
         this.paperId = paper_id;
         this.rating = rating;
         this.comments = comments;
+        this.cstate = cstate;
+
     }
     public ReviewEntity(){
 

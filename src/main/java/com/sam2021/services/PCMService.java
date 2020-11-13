@@ -34,23 +34,43 @@ public class PCMService {
         }
     }
 
-    public List<ReviewEntity> getAllAssignedReviews(Long id){
+    public SubmissionEntity getSubmissionById(Long id){
         try{
-            return reviewRepo.getAllByReviewerIdAndCstate(id, "ASSIGNED");
+            return submissionRepo.findById(id).get(0);
         }
         catch(Exception ex){
             return null;
         }
     }
-    public List<ReviewEntity> getAllSubmittedReviews(Long id){
+
+    public boolean addNewReview(Long paper_id, Long pcm_id){
         try{
-            return reviewRepo.getAllByReviewerIdAndCstate(id, "SUBMITTED");
-        }
-        catch(Exception ex){
-            System.out.println(ex.getCause());
-            return null;
+            reviewRepo.save(new ReviewEntity(pcm_id,paper_id,0,"","REQUESTED"));
+            return true;
+        }catch (Exception ex){
+            return false;
         }
     }
+     public List<ReviewEntity> getReviewIdandState(Long id, String State){
+         try{
+             return reviewRepo.getAllByReviewerIdAndCstate(id,State);
+         }
+         catch(Exception ex){
+             return null;
+         }
+     }
+
+     public boolean isRequestedAlready(Long paper_id, Long uid){
+        try{
+            List<ReviewEntity> res = reviewRepo.findAllByReviewerIdAndPaperId(uid, paper_id);
+            if(res.size() != 0){
+                return false;
+            }
+            return true;
+        }catch (Exception ex){
+            return true;
+        }
+     }
 
 
 }

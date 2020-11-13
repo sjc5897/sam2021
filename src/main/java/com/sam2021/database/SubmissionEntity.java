@@ -12,13 +12,13 @@ public class SubmissionEntity {
     private Long id;
 
     @Column(name="author_id")
-    private int author_id;
+    private int authorId;
 
     @Column(name="author_contact")
     private String email;
 
     @Column(name="author_list")
-    private String author_list;
+    private String authorList;
 
     @Column(name="title")
     private String title;
@@ -31,7 +31,7 @@ public class SubmissionEntity {
 
     @Column(name="version")
     private int version;
-
+    //States are: SUBMITTED, REVIEWING, REVIEWED, RELEASED,
     @Column(name="c_state")
     private String cstate;
 
@@ -41,15 +41,15 @@ public class SubmissionEntity {
         this.fileName = file_name;
         this.format = format;
         this.version = version;
-        this.author_list = author_list;
-        this.author_id = author_id;
+        this.authorList = author_list;
+        this.authorId = author_id;
         this.cstate = c_state;
     }
 
     public SubmissionEntity(){
 
     }
-
+    //Getters
     public String getTitle(){
         return this.title;
     }
@@ -60,13 +60,10 @@ public class SubmissionEntity {
         return this.fileName;
     }
     public String getFormat(){ return this.format; }
-    public int getVersion(){
-        return this.version;
-    }
-    public Long getId(){
-        return this.id;
-    }
-    public int getAuthor_id() { return author_id; }
-    public String getAuthor_list() { return author_list; }
+    public String getCstate() {return this.cstate;}
+    public int getVersion(){ return this.version;}
+    public Long getId(){ return this.id; }
+    public int getAuthor_id() { return authorId; }
+    public String getAuthor_list() { return authorList; }
 }
 
