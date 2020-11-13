@@ -41,7 +41,7 @@ public class SubmissionEntity {
         this.version = version;
         this.authorList = author_list;
         this.authorId = author_id;
-        this.cstate = c_state;
+        this.cstate = cstate;
     }
 
     public SubmissionEntity(){
