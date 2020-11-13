@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class PCMController {
+public class PCCController {
     @Autowired
     AdminService service;
 
-    @RequestMapping(value="/pcm", method= RequestMethod.GET)
-    public String getPCMPage(Model model, HttpServletRequest request){
+    @RequestMapping(value="/pcc", method= RequestMethod.GET)
+    public String getPCCPage(Model model, HttpServletRequest request){
 
         HttpSession session = request.getSession();
         if(session.isNew()){
@@ -24,10 +24,9 @@ public class PCMController {
         }
         String uid = (String) session.getAttribute("uid");
         String role = (String) session.getAttribute("role");
-        if(!role.equals("pcm")){
+        if(!role.equals("pcc")){
             return "redirect:/" + role;
         }
-        return "pcm";
+        return "pcc";
     }
-
 }

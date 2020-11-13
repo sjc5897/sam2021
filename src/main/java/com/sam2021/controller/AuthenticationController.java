@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import static com.sam2021.security.Hasher.hashPass;
 
@@ -23,7 +25,7 @@ import static com.sam2021.security.Hasher.hashPass;
  * Last Edit: 10/24/20
  */
 @Controller
-public class AuthenticationController {
+public class AuthenticationController extends HttpServlet {
     // This wires us to the associated service
     @Autowired
     AuthenitcationService service;
@@ -56,33 +58,48 @@ public class AuthenticationController {
      */
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public String handleLogin(@RequestParam(name="uname") String name, @RequestParam(name="pw") String pw, Model model,
-                              RedirectAttributes redir){
+                              HttpServletRequest request, HttpSession session){
         pw = hashPass(pw);
+
         UserEntity user = service.getUser(name);
         if(user == null){
             model.addAttribute("error",true);
             return "login";
         }
-        else if(user.authenticate(pw)){
-            redir.addFlashAttribute("user",user);
-            if(user.getRole().equals("author")){
-                return "redirect:/author";
-            }
-            else if(user.getRole().equals("admin")){
-                return "redirect:/admin";
-            }
-            else if (user.getRole().equals("PCM")){
-                return "redirect:/pcm";
-            }
-            else if (user.getRole().equals("PCC")){
-                return "redirect:/pcc";
-            }
-            else{
-                model.addAttribute("error",true);
-                return "redirect:/login";
+        else if(user.authenticate(pw)) {
+            try {
+                if (!session.isNew()) {
+                    session.invalidate();
+                }
+                HttpSession newSession = request.getSession();
+                newSession.setAttribute("uid", user.getEmail());
+                newSession.setAttribute("role", user.getRole());
+
+                if (user.getRole().equals("author")) {
+                    return "redirect:/author/";
+                } else if (user.getRole().equals("admin")) {
+                    return "redirect:/admin/";
+                } else if (user.getRole().equals("pcm")) {
+                    return "redirect:/pcm/";
+                } else if (user.getRole().equals("pcc")) {
+                    return "redirect:/pcc/";
+                } else {
+                    model.addAttribute("error", true);
+                    return "redirect:/login/";
+                }
+            } catch (Exception ex) {
+                return "redirect:/login/";
             }
         }
         model.addAttribute("error",true);
         return "login";
+    }
+    @RequestMapping(value="logout",method= RequestMethod.GET)
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        if(!session.isNew()){
+            session.invalidate();
+        }
+        return "redirect:/login";
     }
 }

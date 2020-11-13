@@ -13,7 +13,16 @@ public class AdminService {
     @Autowired
     UserRepository userRepository;
 
-    public List<UserEntity> getUsers(){
+    public List<UserEntity> getUsers() {
         return userRepository.findAll();
+    }
+    public UserEntity getUserById(Long id){
+        return userRepository.findAllById(id).get(0);
+    }
+    public void updateUser(UserEntity user){
+        userRepository.save(user);
+    }
+    public void delete(UserEntity user){
+        userRepository.delete(user);
     }
 }

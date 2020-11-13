@@ -7,26 +7,8 @@
 <header>
     <div th:include="fragments/header :: header"> </div>
 </header>
+
 <body>
-<p th:text="'Hello ' +  ${user.getName()}"></p>
-<span th:if="${papers_review} != null" >
-        <table>
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="user_e: ${users}">
-                        <td th:text="${user_e.getEmail()}"></td>
-                        <td th:text="${user_e.getName()}"></td>
-                        <td th:text="${user_e.getRole()}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </span>
-</body>
+pcc
 </body>
 </html>
