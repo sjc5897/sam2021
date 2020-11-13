@@ -16,7 +16,7 @@
             <label for="rating">Rating out of 10:</label>
             <input id="rating" name="rating" type="number" max="10" th:value="${review.getRating()}" required><br>
             <label for="comments">Comments: </label>
-            <textarea th:value="${review.getComments()}" id="comments" name="comments" type="text" maxlength="255" required><br>
+            <textarea th:value="${review.getComments()}" id="comments" name="comments" type="text" maxlength="255" required></textarea><br>
             <select th:if="${review.getCstate().equals('ASSIGNED')}" class="input" id="action" name="action" required>
                 <option class="opt" value="save">Save</option>
                 <option class="opt" value="submit">Submit</option>

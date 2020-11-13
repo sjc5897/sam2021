@@ -8,8 +8,17 @@
     <div th:include="fragments/header :: header"> </div>
     <link th:href="@{/css/table.css}" rel="stylesheet"/>
 </header>
-
 <body>
+    <p th:text="'Hello ' +  ${name}"></p>
+    <p th:if="${param.error}!=null" th:text="${param.error}"></p>
+
+    <span th:if="${r_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${r_papers},paperstate='Reviewed')">
+    </span>
+    <span th:if="${i_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${i_papers},paperstate='Under Review')">
+    </span>
+    <span th:if="${s_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${s_papers},paperstate='Submitted')">
+    </span>
+
 
 </body>
 </html>

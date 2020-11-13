@@ -11,13 +11,13 @@
 <body>
 <p th:text="'Hello ' +  ${name}"></p>
 <p th:if="${param.error}!=null" th:text="${param.error}"></p>
-    <span th:if="${s_reviews} != null" th:include="fragments/s_review_table :: s_review_table" style="margin: auto">
+    <span th:if="${s_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${s_reviews},reviewtype='Submitted')">
     </span>
-    <span th:if="${a_reviews} != null" th:include="fragments/a_review_table :: a_review_table" style="margin: auto">
+    <span th:if="${a_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${a_reviews},reviewtype='Assigned')">
     </span>
-    <span th:if="${r_reviews} != null" th:include="fragments/r_review_table :: r_review_table " style="margin: auto">
+    <span th:if="${r_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${r_reviews},reviewtype='Requested')">
     </span>
-    <span th:if="${s_papers} != null" th:include="fragments/s_paper_table :: s_paper_table " style="margin: auto">
+    <span th:if="${s_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${s_papers},paperstate='Submitted')">
     </span>
 </body>
 </body>
