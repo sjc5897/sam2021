@@ -56,12 +56,10 @@ public class PCMController extends HttpServlet {
         }
         List<ReviewEntity> r_reviewEntityList = service.getReviewIdandState(uid, "REQUESTED");
         if(r_reviewEntityList != null && r_reviewEntityList.size() > 0){
-            System.out.println(r_reviewEntityList.get(0).getId());
             model.addAttribute("r_reviews", r_reviewEntityList);
         }
         List<ReviewEntity> a_reviewEntityList = service.getReviewIdandState(uid, "ASSIGNED");
         if(a_reviewEntityList != null && a_reviewEntityList.size() > 0){
-            System.out.println(a_reviewEntityList.get(0).getId());
             model.addAttribute("a_reviews", a_reviewEntityList);
         }
         List<ReviewEntity> s_reviewEntityList = service.getReviewIdandState(uid, "SUBMITTED");
