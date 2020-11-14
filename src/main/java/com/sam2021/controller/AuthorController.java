@@ -40,6 +40,7 @@ public class AuthorController {
             model.addAttribute("submissions", submissions);
         }
         return "author";
+
     }
 
     @RequestMapping(value="/author",method= RequestMethod.POST)
