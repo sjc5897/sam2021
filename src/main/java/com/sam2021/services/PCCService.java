@@ -58,6 +58,15 @@ public class PCCService {
         }
     }
 
+    public List<ReviewEntity> getReviewsByPaperId(Long id){
+        try{
+            return reviewRepo.getAllByPaperId(id);
+
+        }catch(Exception ex){
+            return null;
+        }
+    }
+
     public List<ReviewEntity> getReviewByPaperIdAndState(Long id, String State){
         try{
             return reviewRepo.getAllByPaperIdAndCstate(id,State);
@@ -73,5 +82,15 @@ public class PCCService {
         }catch (Exception ex){
             return null;
         }
+    }
+
+    public void rereview(List<ReviewEntity> reviews){
+         for(ReviewEntity e : reviews){
+             e.setCstate("REREVIEW");
+         }
+         reviewRepo.saveAll(reviews);
+         SubmissionEntity submissionEntity = submissionRepo.findById(reviews.get(0).getPaper_id()).get(0);
+         submissionEntity.setCstate("REVIEWING");
+         submissionRepo.save(submissionEntity);
     }
 }

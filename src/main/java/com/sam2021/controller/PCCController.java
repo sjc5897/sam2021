@@ -112,4 +112,29 @@ public class PCCController {
 
 
     }
+    @RequestMapping(value="/pcc/rereview/{id}", method = RequestMethod.GET)
+    public String rereview(@PathVariable("id") Long paper_id, HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        if(session.isNew()){
+            return "redirect:/login";
+        }
+        Long uid = (Long) session.getAttribute("uid");
+        String role = (String) session.getAttribute("role");
+        if(!role.equals("pcc")){
+            return "redirect:/" + role;
+        }
+
+        List<ReviewEntity> reviewEntities = service.getReviewsByPaperId(paper_id);
+        if(reviewEntities==null || reviewEntities.size() < 3){
+            model.addAttribute("error","Review not Found");
+            return "redirect:/pcc";
+        }
+
+        service.rereview(reviewEntities);
+
+        return "redirect:/pcc/review/" + reviewEntities.get(0).getPaper_id();
+
+
+
+    }
 }

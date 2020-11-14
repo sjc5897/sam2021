@@ -30,7 +30,7 @@ public class ReviewEntity {
     @Column(name="comments")
     private String comments;
 
-    // STATES ARE: REQUESTED, ASSIGNED, SUBMITTED
+    // STATES ARE: REQUESTED, ASSIGNED, REREVIEW, SUBMITTED
     @Column(name="c_state")
     private String cstate;
 

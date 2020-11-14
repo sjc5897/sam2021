@@ -12,6 +12,8 @@
 <p th:if="${param.error}!=null" th:text="${param.error}"></p>
     <span th:if="${s_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${s_reviews},reviewtype='Submitted')">
     </span>
+    <span th:if="${rr_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${rr_reviews},reviewtype='PCC Requested Redone')">
+    </span>
     <span th:if="${a_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${a_reviews},reviewtype='Assigned')">
     </span>
     <span th:if="${r_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${r_reviews},reviewtype='Requested')">

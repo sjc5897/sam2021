@@ -54,6 +54,10 @@ public class PCMController extends HttpServlet {
         if(submissionEntityList != null && submissionEntityList.size() > 0){
             model.addAttribute("s_papers", submissionEntityList);
         }
+        List<ReviewEntity> rr_reviewEntityList = service.getReviewIdandState(uid, "REREVIEW");
+        if(rr_reviewEntityList != null && rr_reviewEntityList.size() > 0){
+            model.addAttribute("rr_reviews", rr_reviewEntityList);
+        }
         List<ReviewEntity> r_reviewEntityList = service.getReviewIdandState(uid, "REQUESTED");
         if(r_reviewEntityList != null && r_reviewEntityList.size() > 0){
             model.addAttribute("r_reviews", r_reviewEntityList);

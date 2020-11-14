@@ -34,6 +34,9 @@
          th:include="fragments/review-table :: review-table(reviews=${req_reviews}, reviewtype='Requested')">
 
     </span>
+    <a th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}"
+       th:href="@{/pcc/rereview/} + ${submission.getId()}">Request Re-review</a>
+
     <span th:if="${session.role == 'pcc'} and ${ack_reviews != null}"
          th:include="fragments/review-table :: review-table(reviews=${ack_reviews}, reviewtype='Current')">
     </span>

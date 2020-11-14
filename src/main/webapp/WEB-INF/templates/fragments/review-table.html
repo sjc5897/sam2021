@@ -25,7 +25,7 @@
             <td th:text="${review.getRating()}"></td>
             <td th:text="${review.getComments()}"></td>
             <td th:if="${reviewtype} == 'Submitted'" class="navtd"><a th:href="@{/pcm/review/} + ${review.getId()}">View</a></td>
-            <td th:if="${reviewtype} == 'Assigned'" class="navtd"><a th:href="@{/pcm/review/} + ${review.getId()}">Review</a></td>
+            <td th:if="${reviewtype} == 'Assigned' or ${reviewtype} == 'PCC Requested Redone'" class="navtd"><a th:href="@{/pcm/review/} + ${review.getId()}">Review</a></td>
             <td th:if="${session.role == 'pcc'} and ${reviewtype == 'Requested' }" class="navtd"><a th:href="@{/pcc/assign/} + ${review.getId()}">Approve Request</a></td>
         </tr>
         </tbody>
