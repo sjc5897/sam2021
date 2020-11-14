@@ -83,6 +83,15 @@ public class PCMService {
      public boolean update(ReviewEntity reviewEntity){
         try{
             reviewRepo.save(reviewEntity);
+            // if submit we check the submission state
+            if(reviewEntity.getCstate().equals("SUBMITTED")){
+                List<ReviewEntity> reviewEntities = reviewRepo.getAllByPaperIdAndCstate(reviewEntity.getPaper_id(),"SUBMITTED");
+                if(reviewEntities.size()==3){
+                    SubmissionEntity submissionEntity = submissionRepo.findById(reviewEntity.getPaper_id()).get(0);
+                    submissionEntity.setCstate("REVIEWED");
+                    submissionRepo.save(submissionEntity);
+                }
+             }
             return true;
         }catch (Exception ex){
             return false;

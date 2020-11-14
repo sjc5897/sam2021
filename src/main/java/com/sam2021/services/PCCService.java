@@ -33,12 +33,6 @@ public class PCCService {
         }
     }
 
-
-
-
-
-
-
     public List<SubmissionEntity> getSubmissionbyState(String state){
         try{
             return submissionRepo.getAllByCstate(state);
