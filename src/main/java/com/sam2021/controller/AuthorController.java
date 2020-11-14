@@ -43,6 +43,7 @@ public class AuthorController {
         model.addAttribute("user",user);
         model.addAttribute("name",user.getName());
         return "author";
+
     }
 
     @RequestMapping(value="/author",method= RequestMethod.POST)
