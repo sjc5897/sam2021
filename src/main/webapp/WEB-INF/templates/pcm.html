@@ -9,7 +9,6 @@
     <link th:href="@{/css/table.css}" rel="stylesheet"/>
 </header>
 <body>
-<p th:text="'Hello ' +  ${name}"></p>
 <p th:if="${param.error}!=null" th:text="${param.error}"></p>
     <span th:if="${s_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${s_reviews},reviewtype='Submitted')">
     </span>

@@ -63,4 +63,7 @@ public class SubmissionEntity {
     public Long getId(){ return this.id; }
     public int getAuthor_id() { return authorId; }
     public String getAuthor_list() { return authorList; }
+
+    //Setters
+    public void setCstate(String state){this.cstate = state;}
 }

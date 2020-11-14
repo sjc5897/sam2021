@@ -10,6 +10,8 @@
     <table>
         <thead>
         <tr>
+            <th th:if="${session.role == pcc}">Reviewer</th>
+            <th th:if="${session.role == pcc}">Reviewer's Email</th>
             <th>Paper ID</th>
             <th>Rating</th>
             <th>Comments</th>
@@ -17,11 +19,15 @@
         </thead>
         <tbody>
         <tr th:each="review: ${reviews}" >
+            <td th:if="${session.role == pcc}" >Reviewer</td>
+            <td th:if="${session.role == pcc}">Reviewer's Email</td>
             <td th:text="${review.getPaper_id()}"></td>
             <td th:text="${review.getRating()}"></td>
             <td th:text="${review.getComments()}"></td>
             <td th:if="${reviewtype} == 'Submitted'" class="navtd"><a th:href="@{/pcm/review/} + ${review.getId()}">View</a></td>
             <td th:if="${reviewtype} == 'Assigned'" class="navtd"><a th:href="@{/pcm/review/} + ${review.getId()}">Review</a></td>
+            <td th:if="${session.role == 'pcc'} and ${reviewtype == 'Requested' }" class="navtd"><a th:href="@{/pcc/assign/} + ${review.getId()}">Approve Request</a></td>
+            <td th:if="${session.role == 'pcc'} and ${reviewtype == 'Current' }" class="navtd"><a th:href="@{/pcc/review/} + ${review.getId()}">View Review</a></td>
         </tr>
         </tbody>
     </table>
