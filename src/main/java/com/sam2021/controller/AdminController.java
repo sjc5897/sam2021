@@ -26,13 +26,12 @@ public class AdminController {
         if(session.isNew()){
             return "redirect:/login";
         }
-        String uid = (String) session.getAttribute("uid");
+        Long uid = (Long) session.getAttribute("uid");
         String role = (String) session.getAttribute("role");
         if(!role.equals("admin")){
             return "redirect:/" + role;
         }
 
-        model.addAttribute("name",uid);
         model.addAttribute("users",service.getUsers());
         return "admin";
     }

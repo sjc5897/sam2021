@@ -8,9 +8,7 @@
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
-<p th:text="'Hello ' +  ${name}"></p>
-<span th:if="${users} != null" >
-        <table>
+        <table th:if="${users} != null">
             <thead>
                 <tr>
                     <th>Email</th>
@@ -27,6 +25,5 @@
                 </tr>
             </tbody>
         </table>
-    </span>
 </body>
 </html>

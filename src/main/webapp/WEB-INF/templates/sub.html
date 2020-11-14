@@ -10,6 +10,9 @@
     <link th:href="@{/css/table.css}" rel="stylesheet"/>
 </header>
 <body>
+    <a th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}"
+        th:href="@{/pcc/report/} + ${submission.getId()}">Create Report</a>
+
     <table>
         <thead>
         <tr>
@@ -27,6 +30,16 @@
         </tr>
         </tbody>
     </table>
+    <span th:if="${session.role == 'pcc'} and ${req_reviews != null}"
+         th:include="fragments/review-table :: review-table(reviews=${req_reviews}, reviewtype='Requested')">
+
+    </span>
+    <a th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}"
+       th:href="@{/pcc/rereview/} + ${submission.getId()}">Request Re-review</a>
+
+    <span th:if="${session.role == 'pcc'} and ${ack_reviews != null}"
+         th:include="fragments/review-table :: review-table(reviews=${ack_reviews}, reviewtype='Current')">
+    </span>
 
     <div th:if="${review != null}" th:include="/fragments/review_form :: review-form"></div>
 </body>

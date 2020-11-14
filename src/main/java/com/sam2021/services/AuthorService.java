@@ -37,16 +37,17 @@ public class AuthorService {
         }
     }
 
-    public List<SubmissionEntity> getAuthorsSubmissions(String email){
+    public List<SubmissionEntity> getAuthorsSubmissions(Long id){
         try {
-            return submissionRepo.findAllByEmail(email);
+            return submissionRepo.getAllByAuthorId(id);
         }
         catch (Exception ex){
+            System.out.println(ex.getMessage());
             return null;
         }
 
     }
-    public boolean addNewSubmission(String email, String title, String file_name, String format,String author_list,int version, int author_id){
+    public boolean addNewSubmission(String email, String title, String file_name, String format,String author_list,int version, Long author_id){
         try {
             submissionRepo.save(new SubmissionEntity(email,title,file_name,format,author_list,version,author_id,"SUBMITTED"));
             return true;
