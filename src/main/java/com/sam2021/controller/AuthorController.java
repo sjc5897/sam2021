@@ -29,19 +29,16 @@ public class AuthorController {
         if(session.isNew()){
             return "redirect:/login";
         }
-        String uid = (String) session.getAttribute("uid");
+        Long uid = (Long) session.getAttribute("uid");
         String role = (String) session.getAttribute("role");
         if(!role.equals("author")){
             return "redirect:/" + role;
         }
 
-        user = service.getAuthor((String)session.getAttribute("uid"));
-        List<SubmissionEntity> submissions = service.getAuthorsSubmissions(user.getEmail());
-        if(submissions.size() != 0){
+        List<SubmissionEntity> submissions = service.getAuthorsSubmissions(uid);
+        if(submissions != null &&  submissions.size() > 1){
             model.addAttribute("submissions", submissions);
         }
-        model.addAttribute("user",user);
-        model.addAttribute("name",user.getName());
         return "author";
     }
 
@@ -73,16 +70,14 @@ public class AuthorController {
         if(session.isNew()){
             return "redirect:/login";
         }
-        String uid = (String) session.getAttribute("uid");
+        Long uid = (Long) session.getAttribute("uid");
         String role = (String) session.getAttribute("role");
         if(!role.equals("author")){
             return "redirect:/" + role;
         }
 
-        user = service.getAuthor((String)session.getAttribute("uid"));
-        model.addAttribute("user",user);
 
-        service.addNewSubmission(email,title,file.getOriginalFilename(),format,authorList,Integer.parseInt(version),user.getid().intValue());
+        service.addNewSubmission(email,title,file.getOriginalFilename(),format,authorList,Integer.parseInt(version),uid);
         service.uploadFile(file);
         return "redirect:/author";
     }

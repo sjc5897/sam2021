@@ -10,8 +10,9 @@
     <table>
         <thead>
         <tr>
-            <th th:if="${session.role == pcc}">Reviewer</th>
-            <th th:if="${session.role == pcc}">Reviewer's Email</th>
+            <th th:if="${session.role == 'pcc'}">Reviewer</th>
+            <th th:if="${session.role == 'pcc'}">Reviewer's Email</th>
+            <th th:if="${session.role == 'pcc'}">Reviewer's ID</th>
             <th>Paper ID</th>
             <th>Rating</th>
             <th>Comments</th>
@@ -19,8 +20,9 @@
         </thead>
         <tbody>
         <tr th:each="review: ${reviews}" >
-            <td th:if="${session.role == pcc}" >Reviewer</td>
-            <td th:if="${session.role == pcc}">Reviewer's Email</td>
+            <td th:if="${session.role == 'pcc'}" th:text="${reviewer.get(${review.getReviewer_id()}).getName()}" >Reviewer</td>
+             <td th:if="${session.role == 'pcc'}" th:text="${reviewer.get(${review.getReviewer_id()}).getEmail()}" >Reviewer</td>
+             <td th:if="${session.role == 'pcc'}" th:text="${review.getReviewer_id()}" >Reviewer</td>
             <td th:text="${review.getPaper_id()}"></td>
             <td th:text="${review.getRating()}"></td>
             <td th:text="${review.getComments()}"></td>

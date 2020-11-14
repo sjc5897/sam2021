@@ -2,17 +2,21 @@ package com.sam2021.controller;
 
 import com.sam2021.database.ReviewEntity;
 import com.sam2021.database.SubmissionEntity;
+import com.sam2021.database.UserEntity;
 import com.sam2021.services.AdminService;
 import com.sam2021.services.PCCService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -71,12 +75,21 @@ public class PCCController {
             List<ReviewEntity> reviewRequests = service.getReviewByPaperIdAndState(paper_id,"REQUESTED");
             if(reviewRequests != null && reviewRequests.size() > 1){
                 model.addAttribute("req_reviews", reviewRequests);
+                HashMap<Long, UserEntity> reviewer = null;
+                for(ReviewEntity r : reviewRequests){
+                    reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
+                }
             }
         }
         else{
             List<ReviewEntity> reviews = service.getReviewByPaperId(paper_id);
             if(reviews != null && reviews.size() > 1){
                 model.addAttribute("ack_reviews", reviews);
+                HashMap<Long, UserEntity> reviewer = null;
+                for(ReviewEntity r : reviews){
+                    reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
+                }
+
             }
         }
         return "sub";
@@ -133,8 +146,52 @@ public class PCCController {
         service.rereview(reviewEntities);
 
         return "redirect:/pcc/review/" + reviewEntities.get(0).getPaper_id();
+    }
 
+    @RequestMapping(value="/pcc/report/{id}", method = RequestMethod.GET)
+    public String getReportForm(@PathVariable("id") Long id, HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        if(session.isNew()){
+            return "redirect:/login";
+        }
+        Long uid = (Long) session.getAttribute("uid");
+        String role = (String) session.getAttribute("role");
+        if(!role.equals("pcc")){
+            return "redirect:/" + role;
+        }
 
+        List<ReviewEntity> reviewEntities = service.getReviewByPaperId(id);
+        if(reviewEntities==null || reviewEntities.size() < 3){
+            model.addAttribute("error","Report for paper unavailable");
+            return "redirect:/pcc";
+        }
+        model.addAttribute("reviews",reviewEntities);
+        int ave = 0;
+        for(ReviewEntity e : reviewEntities){
+            ave += e.getRating();
+        }
+        ave = ave/3;
+        model.addAttribute("sub_id", reviewEntities.get(0).getPaper_id());
+        model.addAttribute("ave",ave);
+        return "report_create";
+    }
 
+    @RequestMapping(value="/pcc/report/{id}", method = RequestMethod.POST)
+    public String getReportForm(@PathVariable("id") Long id,
+                                @RequestParam("rating") int rating,
+                                @RequestParam("comments") String PCCcmt,
+                                HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        if(session.isNew()){
+            return "redirect:/login";
+        }
+        Long uid = (Long) session.getAttribute("uid");
+        String role = (String) session.getAttribute("role");
+        if(!role.equals("pcc")){
+            return "redirect:/" + role;
+        }
+        service.submitReport(uid, id, rating, PCCcmt);
+
+        return "redirect:/pcc/review/{id}" + id;
     }
 }

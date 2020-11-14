@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>SAM2021</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
+</head>
+<header>
+    <div th:include="fragments/header :: header"> </div>
+</header>
+<body>
+    <span th:include="fragments/review-table :: review-table(reviews=${reviews}, reviewstate'Current Submitted')"></span>
+    <div class="form">
+        <h1>Final Report Form:</h1>
+        <form method="POST" th:action="@{/pcc/report/} + ${sub_id}">
+            <label for="rating">Final Rating out of 10:</label>
+            <input id="rating" name="rating" type="number" max="10" th:value="${ave}" required><br>
+            <label for="comments">Comments: </label>
+            <textarea id="comments" name="comments" type="text" maxlength="255" required></textarea><br>
+            <input  type="submit" value="Release Report" onclick="confirm('Confirm Review?')">
+        </form>
+    </div>
+</body>
+</html>
