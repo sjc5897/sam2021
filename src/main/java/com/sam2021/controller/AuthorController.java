@@ -3,6 +3,7 @@ package com.sam2021.controller;
 import com.sam2021.database.SubmissionEntity;
 import com.sam2021.database.UserEntity;
 import com.sam2021.services.AuthorService;
+import com.sam2021.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,21 +23,25 @@ public class AuthorController {
     @Autowired
     AuthorService service;
 
+    @Autowired
+    FileService fileService;
+
     @RequestMapping(value="/author", method= RequestMethod.GET)
-    public String getAuthorPage(@ModelAttribute("user") UserEntity user, Model model, HttpServletRequest request){
+    public String getAuthorPage(Model model, HttpServletRequest request){
 
         HttpSession session = request.getSession();
         if(session.isNew()){
             return "redirect:/login";
         }
-        String uid = (String) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
+        String uid = (String) session.getAttribute("uid").toString();
+        String role = (String) session.getAttribute("role").toString();
         if(!role.equals("author")){
             return "redirect:/" + role;
         }
 
-        user = service.getAuthor((String)session.getAttribute("uid"));
-        List<SubmissionEntity> submissions = service.getAuthorsSubmissions(user.getEmail());
+        UserEntity user = service.getAuthor((String)session.getAttribute("email"));
+        System.out.println(uid);
+        List<SubmissionEntity> submissions = service.getAuthorsSubmissions(uid);
         if(submissions.size() != 0){
             model.addAttribute("submissions", submissions);
         }
@@ -73,17 +78,19 @@ public class AuthorController {
         if(session.isNew()){
             return "redirect:/login";
         }
-        String uid = (String) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
+        String uid = (String) session.getAttribute("uid").toString();
+        String role = (String) session.getAttribute("role").toString();
         if(!role.equals("author")){
             return "redirect:/" + role;
         }
 
-        user = service.getAuthor((String)session.getAttribute("uid"));
+        user = service.getAuthor(session.getAttribute("email").toString());
         model.addAttribute("user",user);
-
-        service.addNewSubmission(email,title,file.getOriginalFilename(),format,authorList,Integer.parseInt(version),user.getid().intValue());
-        service.uploadFile(file);
+        int aId = user.getid().intValue();
+        int ver = Integer.parseInt(version);
+        String uniqueName = aId +""+ ver + file.getOriginalFilename();
+        service.addNewSubmission(email,title,uniqueName,format,authorList,ver,aId);
+        fileService.uploadFile(file,uniqueName);
         return "redirect:/author";
     }
 

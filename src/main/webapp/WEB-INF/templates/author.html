@@ -33,7 +33,11 @@
     <form action="/author/new" method="get">
         <input type="submit" value="New Submission">
     </form>
-
+    <form action="/download" method="get">
+        <label for="fileName">File Name:</label>
+        <input id="fileName" name="fileName" type="text" required><br>
+        <input type="submit" value="Download">
+    </form>
 </body>
 <script>
     function rowClicked(value) {

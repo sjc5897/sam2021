@@ -55,13 +55,4 @@ public class AuthorService {
         }
     }
 
-    public void uploadFile(MultipartFile file) {
-        try {
-            Path copyLocation = Paths
-                    .get(context.getRealPath("/") +"uploadDir"+ File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
