@@ -49,13 +49,13 @@
 
         <div class="columns-5 w-row" th:each="review: ${reviews}">
             <div class="w-col w-col-5" th:if="${session.role == 'pcc'}">
-                <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}"></div>
+                <div class="text-block-12 list-heading" th:text="${reviewer.get(review.getReviewer_id()).getName()}"></div>
             </div><!-- ${reviewer.get(${review.getReviewer_id()}).getName()} -->
             <div class="w-col w-col-4" th:if="${session.role == 'pcc'}">
-                <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}"></div>
+                <div class="text-block-12 list-heading" th:text="${reviewer.get(review.getReviewer_id()).getEmail()}"></div>
             </div> <!-- ${reviewer.get(${review.getReviewer_id()}).getEmail()}} -->
             <div class="w-col w-col-1" th:if="${session.role == 'pcc'}">
-                <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}" ></div>
+                <div class="text-block-12 list-heading" th:text="${reviewer.get(review.getReviewer_id()).getName()}" ></div>
             </div>
 
 
@@ -67,19 +67,19 @@
                 <div class="text-block-12 list-heading" th:text="${review.getRating()}"></div>
             </div>
             <div class="w-col w-col-1">
-                <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}"></div>
+                <div class="text-block-12 list-heading" th:text="${review.getComments()}"></div>
             </div>
 
 
 
             <div class="w-col w-col-5" th:if="${reviewtype} == 'Submitted'">
-                <div class="text-block-12 list-heading" th:text="${review.getPaper_id()}"><a th:href="@{/pcm/review/} + ${review.getId()}"><img src="../images/view.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+                <div class="text-block-12 list-heading" ><a th:href="@{/pcm/review/} + ${review.getId()}"><img src="../images/view.svg" loading="lazy" alt="" class="edit-icon"></a></div>
             </div>
             <div class="w-col w-col-4" th:if="${reviewtype} == 'Assigned' or ${reviewtype} == 'PCC Requested Redone'">
-                <div class="text-block-12 list-heading" th:text="${review.getRating()}"><a th:href="@{/pcm/review/} + ${review.getId()}"><img src="../images/review.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+                <div class="text-block-12 list-heading"><a th:href="@{/pcm/review/} + ${review.getId()}"><img src="../images/review.svg" loading="lazy" alt="" class="edit-icon"></a></div>
             </div>
             <div class="w-col w-col-1" th:if="${session.role == 'pcc'} and ${reviewtype == 'Requested' }">
-                <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}"><a th:href="@{/pcc/assign/} + ${review.getId()}"><img src="../images/approve.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+                <div class="text-block-12 list-heading"><a th:href="@{/pcc/assign/} + ${review.getId()}"><img src="../../images/approve.svg" loading="lazy" alt="" class="edit-icon"></a></div>
             </div>
         </div>
     </div>

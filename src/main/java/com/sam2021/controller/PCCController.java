@@ -79,6 +79,7 @@ public class PCCController {
                 for(ReviewEntity r : reviewRequests){
                     reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
                 }
+                model.addAttribute("reviewer",reviewer);
             }
         }
         else{
@@ -90,7 +91,7 @@ public class PCCController {
                     //System.out.println(service.getReviewer(r.getReviewer_id()).getid());
                     reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
                 }
-            model.addAttribute("reviewer",reviewer);
+                model.addAttribute("reviewer",reviewer);
             }
         }
         return "sub";
