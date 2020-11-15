@@ -53,6 +53,18 @@ li {
   margin-top: 10px;
 }
 
+.submit-button.upload.delete {
+  border: 2px solid #000;
+  background-color: rgba(136, 136, 136, 0);
+  color: #000;
+}
+
+.submit-button.upload.delete:hover {
+  border-color: #ff8e8e;
+  background-color: #ff2c2c;
+  color: #fff;
+}
+
 .form-block {
   margin-top: 40px;
   margin-bottom: 50px;
@@ -521,7 +533,7 @@ li {
   line-height: 35px;
 }
 
-.list {
+.listofusers {
   margin-top: 40px;
   padding-right: 0px;
   padding-left: 0px;
@@ -533,8 +545,14 @@ li {
 }
 
 .columns-5 {
+  margin-top: 10px;
   margin-right: 0px;
   margin-left: 0px;
+  background-color: #ddd;
+}
+
+.columns-5.head {
+  margin-top: 30px;
 }
 
 .text-block-12 {

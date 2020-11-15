@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>PCC Dashboard</title>
+    <meta content="PCC dashboard" property="og:title">
+    <meta content="PCC dashboard" property="twitter:title">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="../css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="../css/webflow.css" rel="stylesheet" type="text/css">
+    <link href="../css/sam2021.webflow.css" rel="stylesheet" type="text/css">
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="../images/webclip.png" rel="apple-touch-icon">
+    <style>.w-container {max-width: 1400px;}</style>
 </head>
-<header>
-    <div th:include="fragments/header :: header"> </div>
-    <link th:href="@{/css/table.css}" rel="stylesheet"/>
-</header>
 <body>
+<div class="w-container">
+    <header>
+        <div th:include="fragments/header :: header"> </div>
+    </header>
     <p th:if="${param.error}!=null" th:text="${param.error}"></p>
 
-    <span th:if="${r_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${r_papers},paperstate='Reviewed')">
-    </span>
-    <span th:if="${i_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${i_papers},paperstate='Under Review')">
-    </span>
-    <span th:if="${s_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${s_papers},paperstate='Submitted')">
-    </span>
+    <div th:if="${r_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${r_papers},paperstate='Reviewed')">
+    </div>
+    <div th:if="${i_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${i_papers},paperstate='Under Review')">
+    </div>
+    <div th:if="${s_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${s_papers},paperstate='Submitted')">
+    </div>
 
-
+</div>
 </body>
 </html>

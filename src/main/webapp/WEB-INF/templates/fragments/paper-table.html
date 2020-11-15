@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>PCC - Dashboard</title>
+    <meta content="PCC - Dashboard" property="og:title">
+    <meta content="PCC - Dashboard" property="twitter:title">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="Webflow" name="generator">
+    <link href="../css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="../css/webflow.css" rel="stylesheet" type="text/css">
+    <link href="../css/sam2021.webflow.css" rel="stylesheet" type="text/css">
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="../images/webclip.png" rel="apple-touch-icon">
+    <style>.w-container {max-width: 1400px;}</style>
 </head>
 <body>
-<span th:fragment="paper-table">
-        <H1 th:text="${paperstate} + ' Papers'"></H1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author Email</th>
-                    <th>version</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="paper:${papers}">
-                    <td th:text="${paper.getTitle()}"></td>
-                    <td th:text="${paper.getEmail()}"></td>
-                    <td th:text="${paper.getVersion()}"></td>
-                    <td th:if="${session.role}=='pcm' and ${paperstate} == 'Submitted'" class="navtd"><a th:href="@{/pcm/request/} + ${paper.getId()}">Request Review</a></td>
-                    <td th:if="${session.role}== 'pcc'" class="navtd"><a th:href="@{/pcc/review/} + ${paper.getId()}">View</a></td>
-                    <td th:if="${session.role} == 'author'" class="navtd"><a th:href="@{/sub/} + ${paper.getId()}">View</a></td>
+<div class="w-container">
+    <header>
+        <div th:include="fragments/header :: header"> </div>
+    </header>
+    <div class="paper-submission" th:fragment="paper-table">
+        <h1 class="heading" th:text="${paperstate} + ' Papers'"></h1>
 
-                </tr>
-            </tbody>
-        </table>
-    </span>
+        <div class="columns-5 head w-row">
+            <div class="w-col w-col-5">
+                <div class="text-block-12 list-heading"><strong>Title</strong></div>
+            </div>
+            <div class="w-col w-col-4">
+                <div class="text-block-12 list-heading"><strong>Author Email</strong></div>
+            </div>
+            <div class="w-col w-col-1">
+                <div class="text-block-12 list-heading"><strong>Version</strong></div>
+            </div>
+            <div class="w-col w-col-2">
+                <div class="text-block-12 list-heading"><strong>Action</strong></div>
+            </div>
+        </div>
+        <div class="columns-5 w-row" th:each="paper:${papers}">
+            <div class="w-col w-col-5">
+                <div class="text-block-12" th:text="${paper.getTitle()}"></div>
+            </div>
+            <div class="w-col w-col-4">
+                <div class="text-block-12" th:text="${paper.getEmail()}"></div>
+            </div>
+            <div class="w-col w-col-1">
+                <div class="text-block-12" th:text="${paper.getVersion()}"></div>
+            </div>
+            <div class="column-5 w-col w-col-2" th:if="${session.role}=='pcm' and ${paperstate} == 'Submitted'"><a th:href="@{/pcm/request/} + ${paper.getId()}"><img src="../images/review.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+            <div class="column-5 w-col w-col-2" th:if="${session.role}== 'pcc'"><a th:href="@{/pcc/review/} + ${paper.getId()}"><img src="../images/view.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+            <div class="column-5 w-col w-col-2" th:if="${session.role} == 'author'"><a th:href="@{/sub/} + ${paper.getId()}"><img src="../images/view.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+
+        </div>
+    </div>
+</div>
 </body>
-<script>
-</script>
 </html>
