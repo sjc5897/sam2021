@@ -3,8 +3,8 @@ package com.sam2021.controller;
 import com.sam2021.database.ReviewEntity;
 import com.sam2021.database.SubmissionEntity;
 import com.sam2021.database.UserEntity;
-import com.sam2021.services.AuthenitcationService;
-import com.sam2021.services.PCCService;
+import com.sam2021.services.ReviewService;
+import com.sam2021.services.UserService;
 import com.sam2021.services.SubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,16 +29,15 @@ import java.util.List;
  */
 @Controller
 public class PCCController {
-    // Services
-    @Autowired
-    private PCCService service;
-
+    //Services
     @Autowired
     private SubmissionService submissionService;
 
     @Autowired
-    private AuthenitcationService authenitcationService;
+    private UserService userService;
 
+    @Autowired
+    private ReviewService reviewService;
     /**
      * gets the PCC homepage
      * @param model     Model for frontend
@@ -50,7 +49,7 @@ public class PCCController {
 
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcc");
+        String ret = userService.auth(session,"pcc");
         if(ret != null){
             return ret;
         }
@@ -86,7 +85,7 @@ public class PCCController {
     public String getPCCReviewPage(@PathVariable("id") Long paper_id, Model model, HttpServletRequest request){
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcc");
+        String ret = userService.auth(session,"pcc");
         if(ret != null){
             return ret;
         }
@@ -101,12 +100,12 @@ public class PCCController {
 
         // If paper is in submitted get all the requested reviews
         if(submissionEntity.getCstate().equals("SUBMITTED")){
-            List<ReviewEntity> reviewRequests = service.getReviewByPaperIdAndState(paper_id,"REQUESTED");
-            if(reviewRequests != null && reviewRequests.size() > 1){
+            List<ReviewEntity> reviewRequests = reviewService.getReviewByPaperIdAndState(paper_id,"REQUESTED");
+            if(reviewRequests != null && reviewRequests.size() > 0){
                 model.addAttribute("req_reviews", reviewRequests);
                 HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviewRequests){
-                    reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
+                    reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
                 }
                 model.addAttribute("reviewer",reviewer);
             }
@@ -114,13 +113,13 @@ public class PCCController {
 
         // Otherwise get all the regular reviews
         else{
-            List<ReviewEntity> reviews = service.getReviewByPaperId(paper_id);
+            List<ReviewEntity> reviews = reviewService.getReviewsByPaperId(paper_id);
             if(reviews != null && reviews.size() > 1){
                 model.addAttribute("ack_reviews", reviews);
                 HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviews){
                     //System.out.println(service.getReviewer(r.getReviewer_id()).getid());
-                    reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
+                    reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
                 }
                 model.addAttribute("reviewer",reviewer);
             }
@@ -139,13 +138,13 @@ public class PCCController {
     public String approveReviewReq(@PathVariable("id") Long review_id, HttpServletRequest request, Model model){
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcc");
+        String ret = userService.auth(session,"pcc");
         if(ret != null){
             return ret;
         }
 
         // Gets review
-        ReviewEntity reviewEntity = service.getReviewByReviewId(review_id);
+        ReviewEntity reviewEntity = reviewService.getReviewByReviewId(review_id);
         if(reviewEntity==null){
             model.addAttribute("error","Review not Found");
             return "redirect:/pcc";
@@ -159,7 +158,9 @@ public class PCCController {
         }
 
         //does submission
-        service.assignReview(reviewEntity,submissionEntity);
+        if(reviewService.assignReview(reviewEntity)){
+            submissionService.updateState("REVIEWING", submissionEntity.getId());
+        }
 
         return "redirect:/pcc/review/" + submissionEntity.getId();
 
@@ -178,20 +179,21 @@ public class PCCController {
     public String rereview(@PathVariable("id") Long paper_id, HttpServletRequest request, Model model){
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcc");
+        String ret = userService.auth(session,"pcc");
         if(ret != null){
             return ret;
         }
 
         // Gets list of reviews
-        List<ReviewEntity> reviewEntities = service.getReviewsByPaperId(paper_id);
+        List<ReviewEntity> reviewEntities = reviewService.getReviewsByPaperId(paper_id);
         if(reviewEntities==null || reviewEntities.size() < 3){
             model.addAttribute("error","Review not Found");
             return "redirect:/pcc";
         }
 
         // Submits rereview
-        service.rereview(reviewEntities);
+        reviewService.rereview(reviewEntities);
+        submissionService.updateState("REVIEWING", reviewEntities.get(0).getPaper_id());
 
         return "redirect:/pcc/review/" + paper_id;
     }
@@ -207,13 +209,13 @@ public class PCCController {
     public String getReportForm(@PathVariable("id") Long id, HttpServletRequest request, Model model){
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcc");
+        String ret = userService.auth(session,"pcc");
         if(ret != null){
             return ret;
         }
 
         // Gets the paper's reviews
-        List<ReviewEntity> reviewEntities = service.getReviewByPaperId(id);
+        List<ReviewEntity> reviewEntities = reviewService.getReviewsByPaperId(id);
         if(reviewEntities==null || reviewEntities.size() < 3){
             model.addAttribute("error","Report for paper unavailable");
             return "redirect:/pcc";
@@ -249,13 +251,14 @@ public class PCCController {
                                 HttpServletRequest request, Model model){
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcc");
+        String ret = userService.auth(session,"pcc");
         if(ret != null){
             return ret;
         }
 
         //Submits report
-        service.submitReport((Long) session.getAttribute("uid"), id, rating, PCCcmt);
+        reviewService.submitReport((Long) session.getAttribute("uid"), id, rating, PCCcmt);
+        submissionService.updateState("RELEASED", id);
 
         return "redirect:/pcc/review/{id}" + id;
     }

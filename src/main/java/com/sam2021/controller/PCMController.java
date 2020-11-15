@@ -2,9 +2,8 @@ package com.sam2021.controller;
 
 import com.sam2021.database.ReviewEntity;
 import com.sam2021.database.SubmissionEntity;
-import com.sam2021.services.AdminService;
-import com.sam2021.services.AuthenitcationService;
-import com.sam2021.services.PCMService;
+import com.sam2021.services.ReviewService;
+import com.sam2021.services.UserService;
 import com.sam2021.services.SubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,9 +30,9 @@ import java.util.List;
 public class PCMController extends HttpServlet {
     //Services
     @Autowired
-    PCMService pcmService;
+    ReviewService reviewService;
     @Autowired
-    private AuthenitcationService authenitcationService;
+    private UserService userService;
     @Autowired
     private SubmissionService submissionService;
 
@@ -47,7 +46,7 @@ public class PCMController extends HttpServlet {
     public String getPCMPage(Model model, HttpServletRequest request){
         //Authenticate
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcm");
+        String ret = userService.auth(session,"pcm");
         if(ret != null){
             return ret;
         }
@@ -59,22 +58,22 @@ public class PCMController extends HttpServlet {
             model.addAttribute("s_papers", submissionEntityList);
         }
         // Get all re-requested reviews for user
-        List<ReviewEntity> rr_reviewEntityList = pcmService.getReviewIdandState(uid, "REREVIEW");
+        List<ReviewEntity> rr_reviewEntityList = reviewService.getReviewerIdandState(uid, "REREVIEW");
         if(rr_reviewEntityList != null && rr_reviewEntityList.size() > 0){
             model.addAttribute("rr_reviews", rr_reviewEntityList);
         }
         // Get all requested reviews for user
-        List<ReviewEntity> r_reviewEntityList = pcmService.getReviewIdandState(uid, "REQUESTED");
+        List<ReviewEntity> r_reviewEntityList = reviewService.getReviewerIdandState(uid, "REQUESTED");
         if(r_reviewEntityList != null && r_reviewEntityList.size() > 0){
             model.addAttribute("r_reviews", r_reviewEntityList);
         }
         // Get all assigned reviews for user
-        List<ReviewEntity> a_reviewEntityList = pcmService.getReviewIdandState(uid, "ASSIGNED");
+        List<ReviewEntity> a_reviewEntityList = reviewService.getReviewerIdandState(uid, "ASSIGNED");
         if(a_reviewEntityList != null && a_reviewEntityList.size() > 0){
             model.addAttribute("a_reviews", a_reviewEntityList);
         }
         // Get all submitted reviews for user
-        List<ReviewEntity> s_reviewEntityList = pcmService.getReviewIdandState(uid, "SUBMITTED");
+        List<ReviewEntity> s_reviewEntityList = reviewService.getReviewerIdandState(uid, "SUBMITTED");
         if(s_reviewEntityList != null && s_reviewEntityList.size()>0){
             model.addAttribute("s_reviews", s_reviewEntityList);
         }
@@ -92,7 +91,7 @@ public class PCMController extends HttpServlet {
     public String getPCMRequestForm(@PathVariable("id") Long paper_id, HttpServletRequest request, Model model){
         //Authenticate
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcm");
+        String ret = userService.auth(session,"pcm");
         if(ret != null){
             return ret;
         }
@@ -109,12 +108,10 @@ public class PCMController extends HttpServlet {
             model.addAttribute("error", "Paper is already assigned");
         }
         // check if request already exists
-        else if(!pcmService.isRequestedAlready(paper_id,uid)){
-            model.addAttribute("error", "Paper is already requested ");
-        }
+
         // error in review creation
-        else if(!pcmService.addNewReview(paper_id,uid)){
-            model.addAttribute("error","Unknown error: try again");
+        else if(!reviewService.addNewReview(paper_id,uid)){
+            model.addAttribute("error", "Paper is already requested ");
         }
         return "redirect:/pcm";
     }
@@ -130,14 +127,14 @@ public class PCMController extends HttpServlet {
     public String getPCMReviewPage(@PathVariable("id") Long review_id, Model model, HttpServletRequest request){
         //Authenticate
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcm");
+        String ret = userService.auth(session,"pcm");
         if(ret != null){
             return ret;
         }
         Long uid = (Long) session.getAttribute("uid");
 
 
-        ReviewEntity reviewEntity = pcmService.getReviewById(review_id);
+        ReviewEntity reviewEntity = reviewService.getReviewByReviewId(review_id);
         // ensure the submission exists
         if(reviewEntity == null || reviewEntity.getReviewer_id() != uid || reviewEntity.getCstate().equals("REQUESTED")){
             model.addAttribute("error", "Invalid Review Request");
@@ -169,14 +166,14 @@ public class PCMController extends HttpServlet {
         //Authenticate
         //Authenticate
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"pcm");
+        String ret = userService.auth(session,"pcm");
         if(ret != null){
             return ret;
         }
         Long uid = (Long) session.getAttribute("uid");
 
 
-        ReviewEntity reviewEntity = pcmService.getReviewById(review_id);
+        ReviewEntity reviewEntity = reviewService.getReviewByReviewId(review_id);
 
         // Invalid review
         if(reviewEntity == null || reviewEntity.getReviewer_id() != uid || reviewEntity.getCstate().equals("REQUESTED")){
@@ -194,7 +191,8 @@ public class PCMController extends HttpServlet {
         reviewEntity.setComments(comments);
 
         // update
-        if(pcmService.update(reviewEntity)){
+        if(reviewService.update(reviewEntity)){
+            submissionService.updateState("REVIEWED", reviewEntity.getPaper_id());
             model.addAttribute("success",true);
 
         }else{

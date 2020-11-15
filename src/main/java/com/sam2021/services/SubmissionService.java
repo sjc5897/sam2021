@@ -19,7 +19,7 @@ import java.util.List;
 public class SubmissionService {
     // Wire Repo
     @Autowired
-    SubmissionRepo submissionRepo;
+    private SubmissionRepo submissionRepo;
 
     /**
      * Gets a submission by an id
@@ -73,6 +73,16 @@ public class SubmissionService {
             return submissionRepo.getAllByCstate(state);
         }catch (Exception ex){
             return null;
+        }
+    }
+
+    public void updateState(String state, Long id ){
+        try{
+            SubmissionEntity submissionEntity = submissionRepo.findOneById(id);
+            submissionEntity.setCstate(state);
+            submissionRepo.save(submissionEntity);
+        }catch(Exception ex){
+            return;
         }
     }
 }

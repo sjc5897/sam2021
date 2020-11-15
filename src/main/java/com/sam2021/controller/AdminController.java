@@ -1,9 +1,7 @@
 package com.sam2021.controller;
 
 import com.sam2021.database.UserEntity;
-import com.sam2021.services.AdminService;
-import org.apache.catalina.User;
-import org.apache.catalina.UserDatabase;
+import com.sam2021.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,84 +9,104 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
+/**
+ * This is a custom controller for admins
+ * Language: Java 13
+ * Framework: Spring
+ * Author: Stephen Cook <sjc5897@rit.edu>
+ * Created: 10/24/20
+ * Last Edit: 11/15/20
+ */
 @Controller
 public class AdminController {
+    // Services
     @Autowired
-    AdminService service;
+    private UserService userService;
 
-
-    @RequestMapping(value="/admin", method= RequestMethod.GET)
-    public String getAdminPage(Model model, HttpServletRequest request){
-
+    /**
+     * Gets the admin homepage
+     *
+     * @param request HttpServletRequest the request
+     * @param model   Model the model of objects
+     * @return String representing redirect
+     */
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public String getAdminPage(Model model, HttpServletRequest request) {
+        // Auth
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        Long uid = (Long) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("admin")){
-            return "redirect:/" + role;
+        String ret = userService.auth(session, "admin");
+        if (ret != null) {
+            return ret;
         }
 
-        model.addAttribute("users",service.getUsers());
+        //Get all users
+        model.addAttribute("users", userService.getUsers());
         return "admin";
     }
 
-    @RequestMapping(value="/admin/edit/{id}",method = RequestMethod.GET)
-    public String getEditUserPage(@PathVariable("id")Long id, Model model, HttpServletRequest request){
+    /**
+     * Gets edit page for a user
+     *
+     * @param id      User to edit
+     * @param request HttpServletRequest the request
+     * @param model   Model the model of objects
+     * @return String representing redirect
+     */
+    @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
+    public String getEditUserPage(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+        // Auth
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("admin")){
-            return "redirect:/" + role;
+        String ret = userService.auth(session, "admin");
+        if (ret != null) {
+            return ret;
         }
 
-        model.addAttribute("edit_user",service.getUserById(id));
+        model.addAttribute("edit_user", userService.getUserById(id));
         return "edit_user";
     }
-    @RequestMapping(value="/admin/edit/{id}",method = RequestMethod.POST)
-    public String getEditUserPage(@PathVariable("id")Long id, Model model, HttpServletRequest request,
-                                  @RequestParam("email")String email, @RequestParam("role")String role,
-                                  @RequestParam("f_name")String firstname, @RequestParam("l_name")String l_name,
+
+    /**
+     * Submits edit
+     *
+     * @param id        Id of user to edit
+     * @param request   HttpServletRequest the request
+     * @param model     Model the model of objects
+     * @param email     new email
+     * @param role      new role
+     * @param firstname new firstname
+     * @param l_name    new last name
+     * @param type      type of submission
+     * @return String representing redirect
+     */
+    @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.POST)
+    public String getEditUserPage(@PathVariable("id") Long id, Model model, HttpServletRequest request,
+                                  @RequestParam("email") String email, @RequestParam("role") String role,
+                                  @RequestParam("f_name") String firstname, @RequestParam("l_name") String l_name,
                                   @RequestParam("submit") String type) {
+        // Auth
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
+        String ret = userService.auth(session, "admin");
+        if (ret != null) {
+            return ret;
         }
-        String u_role = (String) session.getAttribute("role");
-        if(!u_role.equals("admin")){
-            return "redirect:/" + u_role;
-        }
-        UserEntity user = service.getUserById(id);
-        if(type.equals("Save")){
+
+        // get user
+        UserEntity user = userService.getUserById(id);
+
+        // if action save
+        if (type.equals("Save")) {
             user.setEmail(email);
-            user.setName(firstname,l_name);
+            user.setName(firstname, l_name);
             user.setRole(role);
-            service.updateUser(user);
+            userService.updateUser(user);
         }
-        if(type.equals("Delete")){
-            service.delete(user);
-        }
-
-        return "redirect:/admin/";
-    }
-    @RequestMapping(value="/admin/delete/{id}", method = RequestMethod.POST)
-    public String deleteUser(@PathVariable("id")Long id, Model model, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        String u_role = (String) session.getAttribute("role");
-        if(!u_role.equals("admin")){
-            return "redirect:/" + u_role;
+        // if action delete
+        else if (type.equals("Delete")) {
+            userService.delete(user);
         }
 
-        UserEntity user = service.getUserById(id);
-        service.delete(user);
         return "redirect:/admin/";
     }
 }
+

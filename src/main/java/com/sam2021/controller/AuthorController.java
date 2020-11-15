@@ -1,7 +1,7 @@
 package com.sam2021.controller;
 
 import com.sam2021.database.SubmissionEntity;
-import com.sam2021.services.AuthenitcationService;
+import com.sam2021.services.UserService;
 import com.sam2021.services.FileService;
 import com.sam2021.services.SubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class AuthorController {
     private FileService fileService;
 
     @Autowired
-    private AuthenitcationService authenitcationService;
+    private UserService userService;
 
     /**
      * This handles gets to the url /author
@@ -47,7 +47,7 @@ public class AuthorController {
 
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"author");
+        String ret = userService.auth(session,"author");
         if(ret != null){
             return ret;
         }
@@ -71,7 +71,7 @@ public class AuthorController {
     public String getSubmissionPage(HttpServletRequest request){
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"author");
+        String ret = userService.auth(session,"author");
         if(ret != null){
             return ret;
         }
@@ -100,7 +100,7 @@ public class AuthorController {
 
         // Authenticate request
         HttpSession session = request.getSession();
-        String ret = authenitcationService.auth(session,"author");
+        String ret = userService.auth(session,"author");
         if(ret != null){
             return ret;
         }
