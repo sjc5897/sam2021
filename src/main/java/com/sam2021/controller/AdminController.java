@@ -53,7 +53,8 @@ public class AdminController {
     @RequestMapping(value="/admin/edit/{id}",method = RequestMethod.POST)
     public String getEditUserPage(@PathVariable("id")Long id, Model model, HttpServletRequest request,
                                   @RequestParam("email")String email, @RequestParam("role")String role,
-                                  @RequestParam("f_name")String firstname, @RequestParam("l_name")String l_name) {
+                                  @RequestParam("f_name")String firstname, @RequestParam("l_name")String l_name,
+                                  @RequestParam("submit") String type) {
         HttpSession session = request.getSession();
         if(session.isNew()){
             return "redirect:/login";
@@ -62,12 +63,17 @@ public class AdminController {
         if(!u_role.equals("admin")){
             return "redirect:/" + u_role;
         }
-
         UserEntity user = service.getUserById(id);
-        user.setEmail(email);
-        user.setName(firstname,l_name);
-        user.setRole(role);
-        service.updateUser(user);
+        if(type.equals("Save")){
+            user.setEmail(email);
+            user.setName(firstname,l_name);
+            user.setRole(role);
+            service.updateUser(user);
+        }
+        if(type.equals("Delete")){
+            service.delete(user);
+        }
+
         return "redirect:/admin/";
     }
     @RequestMapping(value="/admin/delete/{id}", method = RequestMethod.POST)
