@@ -1,34 +1,51 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>SAM2021</title>
+    <meta charset="utf-8">
+    <title>Author - Upload New Paper</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
+    <link th:href="@{/css/normalize.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/webflow.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/sam2021.webflow.css}" rel="stylesheet" type="text/css">
+    <style>.w-container {max-width: 1400px;}</style>
 </head>
-<header>
-    <div th:include="fragments/header :: header"> </div>
-</header>
 <body>
-<div class="form">
-    <form method="POST" th:action="@{/admin/edit/} + ${edit_user.getid()}" action="/admin/edit">
-        <label for="email">Email:</label>
-        <input id="email" name="email" type="text" th:value="${edit_user.getEmail()}" required><br>
-        <label for="role">Role:</label>
-        <select th:value="${edit_user.getRole()}"  type="input" id="role" name="role" required>
-            <option value="author">Author</option>
-            <option value="pcc">PCC</option>
-            <option value="pcm">PCM</option>
-            <option value="admin">Admin</option>
-        </select><br>
-        <label for="f_name">First Name:</label>
-        <input th:value="${edit_user.getFirstname()}" id="f_name" name="f_name" type="text" required><br>
-        <label for="l_name">Last Name:</label>
-        <input th:value="${edit_user.getLastname()}" id="l_name" name="l_name" type="text" required><br>
-        <input type="submit" value="Submit" onclick="confirm('Are you sure you wish to edit this user?')">
-    </form>
-    <form method="POST" th:action="@{/admin/delete/} + ${edit_user.getid()}">
-        <input type="submit" value="Delete" onclick="confirm('Are you sure you wish to delete user?')">
-    </form>
+<div class="w-container">
+    <header>
+        <div th:include="fragments/header :: header"> </div>
+    </header>
+    <div class="section">
+        <h1 class="heading">Edit User</h1>
+        <p class="paragraph">This page lets you edit or delete a user.</p>
+        <div class="form-block w-form">
+            <form id="email-form" name="email-form" data-name="Email Form" class="form" method="POST" th:action="@{/admin/edit/} + ${edit_user.getid()}" action="/admin/edit">
+                <div><label for="email" class="field-label">Email*</label><input th:value="${edit_user.getEmail()}" type="text" class="text-field w-input" maxlength="256" name="email" data-name="email" id="email" required=""></div>
+                <div><label for="f_name" class="field-label">First Name*</label><input th:value="${edit_user.getFirstname()}" type="text" class="text-field w-input" maxlength="256" name="f_name" data-name="f_name" id="f_name" required=""></div>
+                <div><label for="l_name" class="field-label">Last Name*</label><input th:value="${edit_user.getLastname()}" type="text" class="text-field w-input" maxlength="256" name="l_name" data-name="l_name" id="l_name" required=""></div>
+                <div><label for="role" class="field-label">User Role*</label>
+                    <select th:value="${edit_user.getRole()}" id="role" name="role" data-name="role" class="w-select" required="">
+                        <option value="author">Author</option>
+                        <option value="pcc">PCC</option>
+                        <option value="pcm">PCM</option>
+                        <option value="admin">Admin</option>
+                    </select></div>
+                <div class="columns-4 w-row">
+                    <div class="w-col w-col-6">
+                        <input type="submit" value="Delete" data-wait="Please wait..." class="submit-button upload delete w-button" onclick="confirm('Are you sure you wish to delete this user?')">
+                    </div>
+                    <div class="w-col w-col-6">
+                        <input type="submit" value="Save" data-wait="Please wait..." class="submit-button upload save w-button" onclick="confirm('Are you sure you wish to edit this user?')">
+                    </div>
+                </div>
+            </form>
+            <div class="w-form-done">
+                <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="w-form-fail">
+                <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
