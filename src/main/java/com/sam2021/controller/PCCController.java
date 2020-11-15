@@ -75,7 +75,7 @@ public class PCCController {
             List<ReviewEntity> reviewRequests = service.getReviewByPaperIdAndState(paper_id,"REQUESTED");
             if(reviewRequests != null && reviewRequests.size() > 1){
                 model.addAttribute("req_reviews", reviewRequests);
-                HashMap<Long, UserEntity> reviewer = null;
+                HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviewRequests){
                     reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
                 }
