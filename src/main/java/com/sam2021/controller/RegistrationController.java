@@ -31,7 +31,7 @@ public class RegistrationController {
 
     @RequestMapping(value="/register", method = RequestMethod.POST)
     public String handleRegistration(@RequestParam(name="email") String email,
-                                     @RequestParam(name="password") String password,
+                                     @RequestParam(name="pw") String password,
                                      @RequestParam(name="f_name") String f_name,
                                      @RequestParam(name="l_name") String l_name, Model model){
         password = hashPass(password);

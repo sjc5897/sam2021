@@ -26,10 +26,8 @@
             <div class="section">
                 <h1 class="heading">Sign Up</h1>
                 <p class="paragraph">Please fill up the form below to sign up.</p>
+                <p class="paragraph" style="color:red" th:if="${reg_suc==false}">Registration Failed, please try again </p>
                 <div class="form-block w-form">
-                    <div class="w-form-fail">
-                        <div th:if="${reg_suc != null}">Registration Failed, please try again </div>
-                    </div>
                     <form method="POST" action="/register">
                         <div><label for="email" class="field-label">Email*</label>
                             <input type="text" class="text-field w-input" maxlength="256" name="email" data-name="email" placeholder="john@gmail.com" id="email" required=""></div>
