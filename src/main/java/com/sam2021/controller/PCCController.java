@@ -85,11 +85,12 @@ public class PCCController {
             List<ReviewEntity> reviews = service.getReviewByPaperId(paper_id);
             if(reviews != null && reviews.size() > 1){
                 model.addAttribute("ack_reviews", reviews);
-                HashMap<Long, UserEntity> reviewer = null;
+                HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviews){
+                    //System.out.println(service.getReviewer(r.getReviewer_id()).getid());
                     reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
                 }
-
+            model.addAttribute("reviewer",reviewer);
             }
         }
         return "sub";
