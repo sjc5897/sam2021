@@ -82,7 +82,7 @@ public class AuthorController {
 
 
         service.addNewSubmission(email,title,file.getOriginalFilename(),format,authorList,Integer.parseInt(version),uid);
-        service.uploadFile(file);
+        fileService.uploadFile(file);
         return "redirect:/author";
     }
 

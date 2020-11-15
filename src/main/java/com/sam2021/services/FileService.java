@@ -26,7 +26,7 @@ public class FileService {
     @Autowired
     SubmissionRepo submissionRepo;
 
-    public void uploadFile(MultipartFile file, String fileName) {
+    public void uploadFile(MultipartFile file) {
         try {
             Path copyLocation = Paths
                     .get(context.getRealPath("/") +"uploadDir"+ File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
