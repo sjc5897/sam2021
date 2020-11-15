@@ -3,6 +3,7 @@ package com.sam2021.controller;
 import com.sam2021.database.SubmissionEntity;
 import com.sam2021.database.UserEntity;
 import com.sam2021.services.AuthorService;
+import com.sam2021.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,9 @@ public class AuthorController {
     @Autowired
     AuthorService service;
 
+    @Autowired
+    FileService fileService;
+
     @RequestMapping(value="/author", method= RequestMethod.GET)
     public String getAuthorPage(@ModelAttribute("user") UserEntity user, Model model, HttpServletRequest request){
 
@@ -40,7 +44,6 @@ public class AuthorController {
             model.addAttribute("submissions", submissions);
         }
         return "author";
-
     }
 
     @RequestMapping(value="/author",method= RequestMethod.POST)
