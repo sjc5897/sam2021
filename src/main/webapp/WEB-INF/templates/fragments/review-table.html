@@ -49,11 +49,11 @@
 
         <div class="columns-5 w-row" th:each="review: ${reviews}">
             <div class="w-col w-col-5" th:if="${session.role == 'pcc'}">
-                <div class="text-block-12 list-heading" th:text="${reviewer.get(${review.getReviewer_id()}).getName()}"></div>
-            </div>
+                <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}"></div>
+            </div><!-- ${reviewer.get(${review.getReviewer_id()}).getName()} -->
             <div class="w-col w-col-4" th:if="${session.role == 'pcc'}">
-                <div class="text-block-12 list-heading" th:text="${reviewer.get(${review.getReviewer_id()}).getEmail()}"></div>
-            </div>
+                <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}"></div>
+            </div> <!-- ${reviewer.get(${review.getReviewer_id()}).getEmail()}} -->
             <div class="w-col w-col-1" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading" th:text="${review.getReviewer_id()}" ></div>
             </div>
