@@ -23,7 +23,7 @@ import java.util.List;
  * Framework: Spring
  * Author: Stephen Cook <sjc5897@rit.edu>
  * Created: 11/4/20
- * Last Edit: 11/13/20
+ * Last Edit: 11/14/20
  */
 @Controller
 public class PCMController extends HttpServlet {
@@ -54,14 +54,16 @@ public class PCMController extends HttpServlet {
         if(submissionEntityList != null && submissionEntityList.size() > 0){
             model.addAttribute("s_papers", submissionEntityList);
         }
+        List<ReviewEntity> rr_reviewEntityList = service.getReviewIdandState(uid, "REREVIEW");
+        if(rr_reviewEntityList != null && rr_reviewEntityList.size() > 0){
+            model.addAttribute("rr_reviews", rr_reviewEntityList);
+        }
         List<ReviewEntity> r_reviewEntityList = service.getReviewIdandState(uid, "REQUESTED");
         if(r_reviewEntityList != null && r_reviewEntityList.size() > 0){
-            System.out.println(r_reviewEntityList.get(0).getId());
             model.addAttribute("r_reviews", r_reviewEntityList);
         }
         List<ReviewEntity> a_reviewEntityList = service.getReviewIdandState(uid, "ASSIGNED");
         if(a_reviewEntityList != null && a_reviewEntityList.size() > 0){
-            System.out.println(a_reviewEntityList.get(0).getId());
             model.addAttribute("a_reviews", a_reviewEntityList);
         }
         List<ReviewEntity> s_reviewEntityList = service.getReviewIdandState(uid, "SUBMITTED");

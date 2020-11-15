@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>PCM Dashboard</title>
+    <meta content="PCM dashboard" property="og:title">
+    <meta content="PCM dashboard" property="twitter:title">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="../css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="../css/webflow.css" rel="stylesheet" type="text/css">
+    <link href="../css/sam2021.webflow.css" rel="stylesheet" type="text/css">
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="../images/webclip.png" rel="apple-touch-icon">
+    <style>.w-container {max-width: 1400px;}</style>
 </head>
-<header>
-    <div th:include="fragments/header :: header"> </div>
-    <link th:href="@{/css/table.css}" rel="stylesheet"/>
-</header>
 <body>
-<p th:text="'Hello ' +  ${name}"></p>
+<div class="w-container">
+    <header>
+        <div th:include="fragments/header :: header"> </div>
+    </header>
 <p th:if="${param.error}!=null" th:text="${param.error}"></p>
-    <span th:if="${s_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${s_reviews},reviewtype='Submitted')">
-    </span>
-    <span th:if="${a_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${a_reviews},reviewtype='Assigned')">
-    </span>
-    <span th:if="${r_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${r_reviews},reviewtype='Requested')">
-    </span>
-    <span th:if="${s_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${s_papers},paperstate='Submitted')">
-    </span>
+    <div th:if="${s_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${s_reviews},reviewtype='Submitted')">
+    </div>
+    <div th:if="${rr_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${rr_reviews},reviewtype='PCC Requested Redone')">
+    </div>
+    <div th:if="${a_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${a_reviews},reviewtype='Assigned')">
+    </div>
+    <div th:if="${r_reviews} != null" th:include="fragments/review-table :: review-table(reviews=${r_reviews},reviewtype='Requested')">
+    </div>
+    <div th:if="${s_papers} != null" th:include="fragments/paper-table :: paper-table(papers=${s_papers},paperstate='Submitted')">
+    </div>
 </body>
 </body>
 </html>

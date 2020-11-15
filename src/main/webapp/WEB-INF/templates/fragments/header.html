@@ -5,7 +5,7 @@
     <head>
         <link th:href="@{/css/header.css}" rel="stylesheet">
     </head>
-    <ul>
+    <ul class="jones">
         <li><h1 class="logo">SAM2021</h1></li>
         <li class="navbutton" th:if="${session.isEmpty()}"><a href="/login" th:method="GET">Login</a> </li>
         <li class="navbutton" th:if="${!session.isEmpty()}"><a href="/logout" th:method="GET">Logout</a> </li>

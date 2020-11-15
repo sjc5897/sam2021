@@ -1,34 +1,81 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>PCM-Dashboard</title>
+    <meta content="dashboard" property="og:title">
+    <meta content="dashboard" property="twitter:title">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="Webflow" name="generator">
+    <link href="../css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="../css/webflow.css" rel="stylesheet" type="text/css">
+    <link href="../css/sam2021.webflow.css" rel="stylesheet" type="text/css">
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="../images/webclip.png" rel="apple-touch-icon">
+    <style>.w-container {max-width: 1400px;}</style>
 </head>
 <header>
     <div th:include="fragments/header :: header"> </div>
-    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
-    <link th:href="@{/css/table.css}" rel="stylesheet"/>
 </header>
+
 <body>
-    <table>
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Contact</th>
-            <th>Format</th>
-            <th>Version<th>
-        </tr>
-        </thead>
-        <tbody>
-            <td th:text="${submission.getTitle()}"></td>
-            <td th:text="${submission.getEmail()}"></td>
-            <td th:text="${submission.getFormat()}"></td>
-            <td th:text="${submission.getVersion()}"></td>
-        </tr>
-        </tbody>
-    </table>
+<div class="w-container">
+    <!--
+        <a th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}"
+            th:href="@{/pcc/report/} + ${submission.getId()}">Create Report</a>
+    -->
+    <div class="submit-new-paper submit" th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}" th:href="@{/pcc/report/} + ${submission.getId()}"><input type="submit" value="Create Report" data-wait="Please wait..." class="submit-button uploadnew w-button"></div>
+
+    <div>
+        <ul role="list" class="list custom-style w-list-unstyled" >
+            <li class="custom-list-item">
+                <div class="columns-5 w-row">
+                    <div class="w-col w-col-5">
+                        <div class="text-block-12 list-heading"><strong>Title</strong></div>
+                    </div>
+                    <div class="w-col w-col-4">
+                        <div class="text-block-12 list-heading"><strong>Contact</strong></div>
+                    </div>
+                    <div class="w-col w-col-1">
+                        <div class="text-block-12 list-heading"><strong>Format</strong></div>
+                    </div>
+                    <div class="w-col w-col-2">
+                        <div class="text-block-12 list-heading"><strong>Version</strong></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul role="list" class="list custom-style w-list-unstyled">
+            <li class="custom-list-item">
+                <div class="columns-5 w-row">
+                    <div class="w-col w-col-5">
+                        <div class="text-block-12" th:text="${submission.getTitle()}"></div>
+                    </div>
+                    <div class="w-col w-col-4">
+                        <div class="text-block-12" th:text="${submission.getEmail()}"></div>
+                    </div>
+                    <div class="w-col w-col-1">
+                        <div class="text-block-12" th:text="${submission.getFormat()}"></div>
+                    </div>
+                    <div class="column-5 w-col w-col-2" th:text="${submission.getVersion()}"></div>
+                </div>
+            </li>
+            <li></li>
+        </ul>
+    </div>
+
+    <span th:if="${session.role == 'pcc'} and ${req_reviews != null}"
+          th:include="fragments/review-table :: review-table(reviews=${req_reviews}, reviewtype='Requested')">
+
+    </span>
+    <div class="submit-new-paper submit" th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}" th:href="@{/pcc/rereview/} + ${submission.getId()}"><input type="submit" value="Request Re-Review" data-wait="Please wait..." class="submit-button uploadnew w-button"></div>
+
+
+    <span th:if="${session.role == 'pcc'} and ${ack_reviews != null}"
+          th:include="fragments/review-table :: review-table(reviews=${ack_reviews}, reviewtype='Current')">
+    </span>
 
     <div th:if="${review != null}" th:include="/fragments/review_form :: review-form"></div>
+</div>
 </body>
-</span>
 </html>

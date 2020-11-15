@@ -10,7 +10,7 @@ public class SubmissionEntity {
     private Long id;
 
     @Column(name="author_id")
-    private int authorId;
+    private Long authorId;
 
     @Column(name="author_contact")
     private String email;
@@ -33,7 +33,7 @@ public class SubmissionEntity {
     @Column(name="c_state")
     private String cstate;
 
-    public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, int author_id, String cstate){
+    public SubmissionEntity(String email, String title, String file_name,String format, String author_list, int version, Long author_id, String cstate){
         this.email = email;
         this.title = title;
         this.fileName = file_name;
@@ -61,6 +61,9 @@ public class SubmissionEntity {
     public String getCstate() {return this.cstate;}
     public int getVersion(){ return this.version;}
     public Long getId(){ return this.id; }
-    public int getAuthor_id() { return authorId; }
+    public Long getAuthor_id() { return authorId; }
     public String getAuthor_list() { return authorList; }
+
+    //Setters
+    public void setCstate(String state){this.cstate = state;}
 }

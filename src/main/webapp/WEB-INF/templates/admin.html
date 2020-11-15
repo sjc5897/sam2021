@@ -1,32 +1,59 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>Admin-Dashboard</title>
+    <meta content="dashboard" property="og:title">
+    <meta content="dashboard" property="twitter:title">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="Webflow" name="generator">
+    <link href="../css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="../css/webflow.css" rel="stylesheet" type="text/css">
+    <link href="../css/sam2021.webflow.css" rel="stylesheet" type="text/css">
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="../images/webclip.png" rel="apple-touch-icon">
+    <style>.w-container {max-width: 1400px;}</style>
 </head>
-<header>
-    <div th:include="fragments/header :: header"> </div>
-</header>
 <body>
-<p th:text="'Hello ' +  ${name}"></p>
-<span th:if="${users} != null" >
-        <table>
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="user_e: ${users}" >
-                        <td th:text="${user_e.getEmail()}"></td>
-                        <td th:text="${user_e.getName()}"></td>
-                        <td th:text="${user_e.getRole()}"></td>
-                        <td><a th:href="@{/admin/edit/} + ${user_e.getid()}">Edit</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </span>
+<div class="w-container">
+    <header>
+        <div th:include="fragments/header :: header"> </div>
+    </header>
+    <ul role="list" class="list custom-style w-list-unstyled" >
+        <li class="custom-list-item">
+            <div class="columns-5 w-row">
+                <div class="w-col w-col-5">
+                    <div class="text-block-12 list-heading"><strong>Email</strong></div>
+                </div>
+                <div class="w-col w-col-4">
+                    <div class="text-block-12 list-heading"><strong>Full Name</strong></div>
+                </div>
+                <div class="w-col w-col-1">
+                    <div class="text-block-12 list-heading"><strong>Role</strong></div>
+                </div>
+                <div class="w-col w-col-2">
+                    <div class="text-block-12 list-heading"><strong>Edit</strong></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <ul role="list" class="list custom-style w-list-unstyled" th:if="${users} != null">
+        <li class="custom-list-item" th:each="user_e: ${users}" >
+            <div class="columns-5 w-row">
+                <div class="w-col w-col-5">
+                    <div class="text-block-12" th:text="${user_e.getEmail()}"></div>
+                </div>
+                <div class="w-col w-col-4">
+                    <div class="text-block-12" th:text="${user_e.getName()}"></div>
+                </div>
+                <div class="w-col w-col-1">
+                    <div class="text-block-12" th:text="${user_e.getRole()}"></div>
+                </div>
+                <div class="column-5 w-col w-col-2"><a th:href="@{/admin/edit/} + ${user_e.getid()}"><img src="../images/edit.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+            </div>
+        </li>
+        <li></li>
+    </ul>
+</div>
 </body>
 </html>
