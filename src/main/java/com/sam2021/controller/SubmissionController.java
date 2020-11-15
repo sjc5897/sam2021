@@ -20,10 +20,8 @@ public class SubmissionController {
     @RequestMapping(value="/submission/{id}", method= RequestMethod.GET)
     public String getSubmissionDetail(@PathVariable("id") Long id, Model model){
         System.out.println(id);
-        List<SubmissionEntity> sub = service.getSubmission(id);
-        System.out.println(sub.get(0));
-        System.out.println(sub.get(0).getEmail());
-        model.addAttribute("submission",sub.get(0));
+        SubmissionEntity sub = service.getSubmission(id);
+        model.addAttribute("submission",sub);
         return "sub";
     }
 }

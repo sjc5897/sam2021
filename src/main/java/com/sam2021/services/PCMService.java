@@ -24,24 +24,6 @@ public class PCMService {
     @Autowired
     ReviewRepo reviewRepo;
 
-    public List<SubmissionEntity> getAllSubmitted(){
-        try{
-            return submissionRepo.getAllByCstate("SUBMITTED");
-        }
-        catch(Exception ex){
-            System.out.println(ex.getCause());
-            return null;
-        }
-    }
-
-    public SubmissionEntity getSubmissionById(Long id){
-        try{
-            return submissionRepo.findById(id).get(0);
-        }
-        catch(Exception ex){
-            return null;
-        }
-    }
 
     public boolean addNewReview(Long paper_id, Long pcm_id){
         try{
@@ -87,7 +69,7 @@ public class PCMService {
             if(reviewEntity.getCstate().equals("SUBMITTED")){
                 List<ReviewEntity> reviewEntities = reviewRepo.getAllByPaperIdAndCstate(reviewEntity.getPaper_id(),"SUBMITTED");
                 if(reviewEntities.size()==3){
-                    SubmissionEntity submissionEntity = submissionRepo.findById(reviewEntity.getPaper_id()).get(0);
+                    SubmissionEntity submissionEntity = submissionRepo.findOneById(reviewEntity.getPaper_id());
                     submissionEntity.setCstate("REVIEWED");
                     submissionRepo.save(submissionEntity);
                 }

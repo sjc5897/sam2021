@@ -62,4 +62,17 @@ public class SubmissionService {
             return false;
         }
     }
+
+    /**
+     * Gets all submissions by state
+     * @param state String representing requested state
+     * @return      List of relevant submissions
+     */
+    public List<SubmissionEntity> getSubmissionbyState(String state){
+        try{
+            return submissionRepo.getAllByCstate(state);
+        }catch (Exception ex){
+            return null;
+        }
+    }
 }

@@ -33,22 +33,7 @@ public class PCCService {
         }
     }
 
-    public List<SubmissionEntity> getSubmissionbyState(String state){
-        try{
-            return submissionRepo.getAllByCstate(state);
-        }catch (Exception ex){
-            return null;
-        }
-    }
 
-    public SubmissionEntity getSubmissionById(Long id){
-        try{
-            return submissionRepo.findById(id).get(0);
-
-        }catch(Exception ex){
-            return null;
-        }
-    }
     public ReviewEntity getReviewByReviewId(Long id){
         try{
             return reviewRepo.findById(id).get(0);
@@ -97,7 +82,7 @@ public class PCCService {
              e.setCstate("REREVIEW");
          }
          reviewRepo.saveAll(reviews);
-         SubmissionEntity submissionEntity = submissionRepo.findById(reviews.get(0).getPaper_id()).get(0);
+         SubmissionEntity submissionEntity = submissionRepo.findOneById(reviews.get(0).getPaper_id());
          submissionEntity.setCstate("REVIEWING");
          submissionRepo.save(submissionEntity);
     }
@@ -115,7 +100,7 @@ public class PCCService {
         reviewRepo.saveAll(reviews);
 
         //change state of paper
-        SubmissionEntity submissionEntity = submissionRepo.findById(paper).get(0);
+        SubmissionEntity submissionEntity = submissionRepo.findOneById(paper);
         submissionEntity.setCstate("RELEASED");
         submissionRepo.save(submissionEntity);
     }

@@ -54,7 +54,7 @@ public class AuthorController {
 
         // Get submissions
         List<SubmissionEntity> submissions = submissionService.getAuthorsSubmissions((Long) session.getAttribute("uid"));
-        if(submissions != null &&  submissions.size() > 1){
+        if(submissions != null &&  submissions.size() > 0){
             model.addAttribute("submissions", submissions);
         }
 
