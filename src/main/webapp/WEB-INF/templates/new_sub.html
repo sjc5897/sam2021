@@ -1,42 +1,73 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Sun Nov 15 2020 02:33:59 GMT+0000 (Coordinated Universal Time)  -->
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>SAM2021</title>
+    <meta charset="utf-8">
+    <title>Author - Upload New Paper</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
+    <link th:href="@{/css/normalize.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/webflow.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/sam2021.webflow.css}" rel="stylesheet" type="text/css">
+    <style>.w-container {max-width: 1400px;}</style>
 </head>
-<header>
-    <div th:include="fragments/header :: header"> </div>
-</header>
 <body>
-<div class="form">
-    <form method="POST" action="/author/new" enctype="multipart/form-data">
+<div class="w-container">
 
-        <label for="email">Contact Email:</label>
-        <input id="email" name="email" type="text" required><br>
+    <header>
+        <div th:include="fragments/header :: header"> </div>
+    </header>
 
-        <label for="authorList">Authors to credit:</label>
-        <input id="authorList" name="authorList" type="text" required><br>
 
-        <label for="title">Paper Title:</label>
-        <input id="title" name="title" type="text" required><br>
+    <div class="section">
+        <h1 class="heading">Upload New Paper</h1>
+        <p class="paragraph">Please add the necessary details.</p>
+        <div class="form-block w-form">
 
-        <label for="format">File Format:</label>
-        <select id="format" name="format">
-            <option value="pdf">.pdf</option>
-            <option value="doc">.doc</option>
-            <option value="docx">.docx</option>
-        </select><br>
+            <form id="form" name="form" data-name="form" class="form" method="POST" action="/author/new" enctype="multipart/form-data">
+                <div>
+                    <label for="email" class="field-label">Email*</label>
+                    <input type="text" class="text-field w-input" maxlength="256" name="email" data-name="email" placeholder="john@gmail.com" id="email" required=""></div>
+                <div><label for="title" class="field-label">Title of the Paper*</label>
+                    <input type="text" class="text-field w-input" maxlength="256" name="title" data-name="title" placeholder="The Theory of Everything" id="title" required=""></div>
+                <div><label for="authorList" class="field-label">Authors*</label>
+                    <input type="text" class="text-field w-input" maxlength="256" name="authorList" data-name="authorList" placeholder="Morgan Freeman,  Benjamin Graham, Elon Musk" id="authorList"></div>
+                <div class="w-row">
+                    <div class="w-col w-col-6">
+                        <div class="text-block-11">Version Number*</div>
 
-        <label for="version">File Version:</label>
-        <input id="version" name="version" type="number" min="0" step="1" required><br>
+                        <input id="version" name="version" type="number" min="0" step="1" class="w-select" required="">
+                    </div>
+                    <div class="w-col w-col-6">
+                        <div class="text-block-11">File Format*</div><select id="format" name="format" data-name="format" class="w-select">
+                        <option value="">Select one...</option>
+                        <option value="First">PDF</option>
+                        <option value="Second">DOC</option>
+                        <option value="Third">DOCX</option>
+                    </select>
+                    </div>
+                </div>
 
-        <input type="file" name="file" accept=".pdf,.doc,.docx"required/> <br/><br/>
-        <input type="submit" value="Submit">
-        <div th:if="${message}">
-            <h2 th:text="${message}"/>
+                <div class="columns-4 w-row">
+                    <div class="w-col w-col-6">
+                        <div class="text-block-11">Select File*</div>
+
+
+                        <input class="submit-button upload w-button" type="file" name="file" accept=".pdf,.doc,.docx" required =""/> <br/><br/>
+
+                    </div>
+                    <div class="w-col w-col-6"></div>
+                </div>
+
+                <div class="submit-new-paper submit"><input type="submit" value="Submit" data-wait="Please wait..." class="submit-button uploadnew w-button"></div>
+
+                <div class="w-form-done" th:if="${message}">
+                    <h2 th:text="${message}"/>
+                </div>
+
+            </form>
+
         </div>
-    </form>
+    </div>
 </div>
 </body>
 </html>
