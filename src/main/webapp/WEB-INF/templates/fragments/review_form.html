@@ -3,18 +3,21 @@
 <head>
     <title>SAM2021</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/normalize.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/webflow.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/sam2021.webflow.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
     <div class="form" th:fragment="review-form">
         <span th:if="${param.success != null}">
-            <p th:if="${param.success==true}">Review Successfully updated</p>
-            <p th:unless="${param.success == false}">Review Updated Failed, please try again</p>
+            <p th:if="${param.success==true}" class="w-form-done">Review Successfully updated</p>
+            <p th:unless="${param.success == false}" class="w-form-done">Review Updated Failed, please try again</p>
         </span>
-        <h1>Review Form:</h1>
+        <h1 class="heading">Review Form:</h1>
         <form method="POST" th:action="@{/pcm/review/} + ${review.getId()}">
-            <label for="rating">Rating out of 10:</label>
-            <input id="rating" name="rating" type="number" max="10" th:value="${review.getRating()}" required><br>
-            <label for="comments">Comments: </label>
+            <label for="rating" class="field-label">Rating out of 10:</label>
+            <input id="rating" name="rating" type="number" min="0" max="10" th:value="${review.getRating()}" class="w-select" required><br>
+            <label for="comments" class="field-label">Comments: </label>
             <textarea th:text="${review.getComments()}" id="comments" name="comments" type="text" maxlength="255" required></textarea><br>
             <select th:if="${review.getCstate().equals('ASSIGNED')}" class="input" id="action" name="action" required>
                 <option class="opt" value="save">Save</option>

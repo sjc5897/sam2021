@@ -14,14 +14,28 @@
     <link th:href="@{/images/webclip.png}" rel="apple-touch-icon"/>
     <style>.w-container {max-width: 1400px;}</style>
 </head>
-<header>
-    <div th:include="fragments/header :: header"> </div>
-</header>
 <body>
 <div class="w-container">
 
-    <span th:if="${submissions} != null" >
-        <div class="main-layout w-row">
+    <header>
+        <div th:include="fragments/header :: header"> </div>
+    </header>
+
+    <div class="main-layout w-row">
+        <div class="column-4 w-col w-col-3">
+            <form th:action="@{/author/new}" method="GET" class="div-block-5">
+                <button class="div-block-5 upload">
+                    <div class="div-block-6">
+                        <img src="../images/np_upload_1570343_696969.svg" loading="lazy" alt="" class="image">
+                        <div class="text-block-8 upload">Upload New Submission</div>
+                    </div>
+                </button>
+
+            </form>
+        </div>
+
+        <span th:if="${submissions} != null" >
+
            <div class="column-4 w-col w-col-3" th:each="submission: ${submissions}" th:onclick="'window.location.href=\'/submission/' + ${submission.getId()} + '\''">
             <div class="div-block-5">
               <div class="div-block-9">
@@ -29,7 +43,7 @@
                   <div class="column-5 w-col w-col-6">
                     <div class="text-block-9"><strong>Upload Format</strong></div>
                   </div>
-                  <div class="column-6 w-col w-col-6">
+                  <div class="column-5 w-col w-col-6">
                     <div class="text-block-9" th:text="${submission.getFormat()}"></div>
                   </div>
                 </div>
@@ -39,7 +53,7 @@
                   <div class="column-5 w-col w-col-6">
                     <div class="text-block-9"><strong>Paper Version</strong></div>
                   </div>
-                  <div class="column-6 w-col w-col-6">
+                  <div class="column-5 w-col w-col-6">
                     <div class="text-block-9" th:text="${submission.getVersion()}"></div>
                   </div>
                 </div>
@@ -55,22 +69,8 @@
               </div>
             </div>
            </div>
-        </div>
     </span>
-
-    <div class="column-4 w-col w-col-3">
-        <form th:action="@{/author/new}" method="GET" class="div-block-5">
-        <button class="div-block-5 upload">
-            <div class="div-block-6">
-                    <img src="../images/np_upload_1570343_696969.svg" loading="lazy" alt="" class="image">
-                <div class="text-block-8 upload">Upload New Submission</div>
-            </div>
-        </button>
-
-        </form>
     </div>
-
-
 </div>
 </body>
 <script>

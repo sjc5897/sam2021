@@ -540,6 +540,7 @@ textarea.w-select {
 .w-row .w-row {
   margin-left: 0;
   margin-right: 0;
+  margin-bottom: 20px;
 }
 .w-col {
   position: relative;

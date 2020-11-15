@@ -345,6 +345,7 @@ li {
   min-height: 240px;
   padding: 20px;
   background-color: #c4c4c4;
+  margin-bottom: 20px;
 }
 
 .text-block-8 {
@@ -365,6 +366,8 @@ li {
 
 .text-block-9 {
   color: #4d4d4d;
+  margin-bottom: 6px;
+  font-weight: bold;
 }
 
 .div-block-6 {
@@ -405,7 +408,7 @@ li {
 }
 
 .text-block-10 {
-  position: absolute;
+  position: static;
   left: 10%;
   top: 184px;
   right: auto;
