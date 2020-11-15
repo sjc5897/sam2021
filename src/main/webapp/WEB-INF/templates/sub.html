@@ -48,8 +48,8 @@
             </div>
         </li>
     </ul>
-    <ul role="list" class="list custom-style w-list-unstyled" th:if="${users} != null">
-        <li class="custom-list-item" th:each="user_e: ${users}" >
+    <ul role="list" class="list custom-style w-list-unstyled">
+        <li class="custom-list-item">
             <div class="columns-5 w-row">
                 <div class="w-col w-col-5">
                     <div class="text-block-12" th:text="${submission.getTitle()}"></div>
