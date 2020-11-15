@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RegistrationController {
     // service
     @Autowired
-    UserService service;
+    private UserService service;
 
     /**
      * Gets the registration page

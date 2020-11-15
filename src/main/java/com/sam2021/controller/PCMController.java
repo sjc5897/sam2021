@@ -30,7 +30,7 @@ import java.util.List;
 public class PCMController extends HttpServlet {
     //Services
     @Autowired
-    ReviewService reviewService;
+    private ReviewService reviewService;
     @Autowired
     private UserService userService;
     @Autowired

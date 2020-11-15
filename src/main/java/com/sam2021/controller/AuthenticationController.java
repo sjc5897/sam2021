@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationController extends HttpServlet {
     // This wires us to the associated service
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     /**
      * This displays a page when "/" is requested, should link to home but I was lazy

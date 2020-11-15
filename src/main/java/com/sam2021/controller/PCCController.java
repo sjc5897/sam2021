@@ -164,8 +164,6 @@ public class PCCController {
 
         return "redirect:/pcc/review/" + submissionEntity.getId();
 
-
-
     }
 
     /**
@@ -245,7 +243,7 @@ public class PCCController {
      * @return          String representing redirect
      */
     @RequestMapping(value="/pcc/report/{id}", method = RequestMethod.POST)
-    public String getReportForm(@PathVariable("id") Long id,
+    public String postReportForm(@PathVariable("id") Long id,
                                 @RequestParam("rating") int rating,
                                 @RequestParam("comments") String PCCcmt,
                                 HttpServletRequest request, Model model){
