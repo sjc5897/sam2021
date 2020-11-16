@@ -75,9 +75,7 @@
             <li></li>
         </ul>
     </div>
-
-    <span th:if="${session.role == 'pcc'} and ${req_reviews != null}"
-          th:include="fragments/review-table :: review-table(reviews=${req_reviews}, reviewtype='Requested')">
+    <span th:if="${session.role == 'pcc'} and ${req_reviews != null}" th:include="fragments/review-table :: review-table(reviews=${req_reviews}, reviewtype='Requested')">
     </span>
     <span th:if="${session.role == 'author'} and ${reviews != null}"
           th:include="fragments/review-table :: review-table(reviews=${reviews}, reviewtype='Requested')">

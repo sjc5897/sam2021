@@ -67,10 +67,10 @@
 
 
 
-            <div class="w-col w-col-5" th:if="${reviewtype} == 'Submitted'">
+            <div class="w-col w-col-1" th:if="${reviewtype} == 'Submitted'">
                 <div class="text-block-12 list-heading" ><a th:href="@{/pcm/review/} + ${review.getId()}"><img src="../images/view.svg" loading="lazy" alt="" class="edit-icon"></a></div>
             </div>
-            <div class="w-col w-col-4" th:if="${reviewtype} == 'Assigned' or ${reviewtype} == 'PCC Requested Redone'">
+            <div class="w-col w-col-1" th:if="${reviewtype} == 'Assigned' or ${reviewtype} == 'PCC Requested Redone'">
                 <div class="text-block-12 list-heading"><a th:href="@{/pcm/review/} + ${review.getId()}"><img src="../images/review.svg" loading="lazy" alt="" class="edit-icon"></a></div>
             </div>
             <div class="w-col w-col-1" th:if="${session.role == 'pcc'} and ${reviewtype == 'Requested' }">
