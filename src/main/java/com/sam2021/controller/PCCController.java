@@ -118,7 +118,6 @@ public class PCCController {
                 model.addAttribute("ack_reviews", reviews);
                 HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviews){
-                    //System.out.println(service.getReviewer(r.getReviewer_id()).getid());
                     reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
                 }
                 model.addAttribute("reviewer",reviewer);
