@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -24,8 +26,26 @@ public class SubmissionController {
 
 
     @RequestMapping(value="/submission/{id}", method= RequestMethod.GET)
-    public String getSubmissionDetail(@PathVariable("id") Long id, Model model){
+    public String getSubmissionDetail(@PathVariable("id") Long id, Model model, HttpServletRequest request){
         SubmissionEntity sub = service.getSubmission(id);
+
+        // Authenticate
+        HttpSession session = request.getSession();
+        if(session.isNew()){
+            return "redirect:/login";
+        }
+        Long uid = (Long) session.getAttribute("uid");
+        String role = (String) session.getAttribute("role");
+        if(role.equals("author") && !uid.equals(sub.getAuthor_id())){
+            return "redirect:/author";
+        }
+        else if(role.equals("pcm")){
+            boolean ret = reviewService.checkIfPcmAccess(uid,sub.getId());
+            if(!ret){
+                return "redirect:/pcm";
+            }
+        }
+
         if(sub.getCstate().equals("RELEASED")){
             List<ReviewEntity> reviews = reviewService.getReviewsByPaperId(sub.getId());
             model.addAttribute("reviews",reviews);

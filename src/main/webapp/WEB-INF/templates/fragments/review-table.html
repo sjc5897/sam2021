@@ -21,16 +21,16 @@
 
 
         <div class="columns-5 head w-row" >
-            <div class="w-col w-col-5" th:if=>
+            <div class="w-col w-col-5" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading"><strong>Reviewer</strong></div>
             </div>
-            <div class="w-col w-col-4">
+            <div class="w-col w-col-4" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading"><strong>Reviewer's Email</strong></div>
             </div>
-            <div class="w-col w-col-1">
+            <div class="w-col w-col-1" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading"><strong>Reviewer's ID</strong></div>
             </div>
-            <div class="w-col w-col-2">
+            <div class="w-col w-col-2" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading"><strong></strong></div>
             </div>
             <div class="w-col w-col-5">
@@ -47,16 +47,18 @@
             </div>
         </div>
 
-        <div class="columns-5 w-row">
+        <div class="columns-5 w-row" th:each="review: ${reviews}">
             <div class="w-col w-col-5" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading" th:if th:text="${reviewer.get(review.getReviewer_id()).getName()}"></div>
             </div>
-            <div class="w-col w-col-4">
+            <div class="w-col w-col-4" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading" th:text="${reviewer.get(review.getReviewer_id()).getEmail()}"></div>
             </div>
-            <div class="w-col w-col-1">
+            <div class="w-col w-col-1" th:if="${session.role == 'pcc'}">
                 <div class="text-block-12 list-heading" th:text="${reviewer.get(review.getReviewer_id()).getName()}" ></div>
             </div>
+
+
 
             <div class="w-col w-col-5">
                 <div class="text-block-12 list-heading" th:text="${review.getPaper_id()}"></div>

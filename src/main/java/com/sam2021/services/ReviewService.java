@@ -178,9 +178,24 @@ public class ReviewService {
             return false;
         }
 
-
-
     }
 
+    /**
+     * check pcm access
+     * @param reviewer_id   id of reviewer
+     * @param paper_id      id of paper
+     * @return              boolean
+     */
+    public boolean checkIfPcmAccess(Long reviewer_id, Long paper_id){
+      try{
+          ReviewEntity reviewEntity = reviewRepo.getOneByReviewerIdAndPaperId(reviewer_id,paper_id);
+          if(reviewEntity.getCstate().equals("REQUESTED")){
+              return false;
+          }
+          return true;
+      }catch (Exception ex){
+          return false;
+      }
+    }
 
 }
