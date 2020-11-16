@@ -69,7 +69,9 @@
 
     <span th:if="${session.role == 'pcc'} and ${req_reviews != null}"
           th:include="fragments/review-table :: review-table(reviews=${req_reviews}, reviewtype='Requested')">
-
+    </span>
+    <span th:if="${session.role == 'author'} and ${reviews != null}"
+          th:include="fragments/review-table :: review-table(reviews=${reviews}, reviewtype='Requested')">
     </span>
     <div class="submit-new-paper submit" th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}" th:href="@{/pcc/rereview/} + ${submission.getId()}"><input type="submit" value="Request Re-Review" data-wait="Please wait..." class="submit-button uploadnew w-button"></div>
 
