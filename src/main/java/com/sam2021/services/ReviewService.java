@@ -145,7 +145,7 @@ public class ReviewService {
      */
     public void submitReport(long pcc, long paper, int rating, String cmt){
         //Create the PCC Review
-        ReviewEntity pccReview = new ReviewEntity(pcc, paper, rating, cmt, "PCC");
+        ReviewEntity pccReview = new ReviewEntity(pcc, paper, rating, cmt, "SUBMITTED");
         reviewRepo.save(pccReview);
 
         // Change state of existing reviews
