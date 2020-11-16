@@ -114,7 +114,7 @@ public class PCCController {
         // Otherwise get all the regular reviews
         else{
             List<ReviewEntity> reviews = reviewService.getReviewsByPaperId(paper_id);
-            if(reviews != null && reviews.size() > 1){
+            if(reviews != null && reviews.size() > 0){
                 model.addAttribute("ack_reviews", reviews);
                 HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviews){
@@ -219,6 +219,12 @@ public class PCCController {
         }
         model.addAttribute("reviews",reviewEntities);
 
+        HashMap<Long, UserEntity> reviewer = new HashMap<>();
+        for(ReviewEntity r : reviewEntities){
+            reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
+        }
+        model.addAttribute("reviewer",reviewer);
+
         // Calcs average
         int ave = 0;
         for(ReviewEntity e : reviewEntities){
@@ -257,6 +263,6 @@ public class PCCController {
         reviewService.submitReport((Long) session.getAttribute("uid"), id, rating, PCCcmt);
         submissionService.updateState("RELEASED", id);
 
-        return "redirect:/pcc/review/{id}" + id;
+        return "redirect:/pcc/";
     }
 }

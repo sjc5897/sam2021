@@ -2,8 +2,10 @@ package com.sam2021.controller;
 
 import com.sam2021.database.ReviewEntity;
 import com.sam2021.database.SubmissionEntity;
+import com.sam2021.database.UserEntity;
 import com.sam2021.services.ReviewService;
 import com.sam2021.services.SubmissionService;
+import com.sam2021.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,6 +26,9 @@ public class SubmissionController {
 
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    UserService userService;
 
 
     @RequestMapping(value="/submission/{id}", method= RequestMethod.GET)
@@ -49,6 +55,11 @@ public class SubmissionController {
         if(sub.getCstate().equals("RELEASED")){
             List<ReviewEntity> reviews = reviewService.getReviewsByPaperId(sub.getId());
             model.addAttribute("reviews",reviews);
+            HashMap<Long, UserEntity> reviewer = new HashMap<>();
+            for(ReviewEntity r : reviews){
+                reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
+            }
+            model.addAttribute("reviewer",reviewer);
         }
         model.addAttribute("submission",sub);
         return "sub";
