@@ -57,7 +57,10 @@
                     <div class="w-col w-col-1">
                         <div class="text-block-12" th:text="${submission.getFormat()}"></div>
                     </div>
-                    <div class="column-5 w-col w-col-2" th:text="${submission.getVersion()}"></div>
+                    <div class="w-col w-col-2" th:text="${submission.getVersion()}"></div>
+                    <div class="column-5 w-col w-col-3">
+                        <div class="text-block-12 list-heading"><a th:href="@{/download/} + ${submission.getFileName()}"><img src="/images/view.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+                    </div>
                 </div>
             </li>
             <li></li>

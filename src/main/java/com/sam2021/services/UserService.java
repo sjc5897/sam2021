@@ -71,7 +71,6 @@ public class UserService {
         if(session.isNew()){
             return "redirect:/login";
         }
-        Long uid = (Long) session.getAttribute("uid");
         String role = (String) session.getAttribute("role");
         if(!role.equals(a_role)){
             return "redirect:/" + role;
