@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,8 +27,10 @@ public class FileController {
     @Autowired
     ServletContext context;
 
-    @RequestMapping(value="/download", method= RequestMethod.GET)
-    public String getDownloadFile(Model model, @RequestParam("fileName")String fileName, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value="/download/{file:.+}", method= RequestMethod.GET)
+    public String getDownloadFile(Model model, @PathVariable("file")String fileName, HttpServletRequest request, HttpServletResponse response) {
+
+
 
         HttpSession session = request.getSession();
         if(session.isNew()){

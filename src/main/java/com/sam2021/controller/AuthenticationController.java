@@ -1,7 +1,7 @@
 package com.sam2021.controller;
 
 import com.sam2021.database.UserEntity;
-import com.sam2021.services.AuthenitcationService;
+import com.sam2021.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static com.sam2021.security.Hasher.hashPass;
 
 /**
  * This is a custom controller for login into the system
@@ -28,7 +27,7 @@ import static com.sam2021.security.Hasher.hashPass;
 public class AuthenticationController extends HttpServlet {
     // This wires us to the associated service
     @Autowired
-    AuthenitcationService service;
+    private UserService userService;
 
     /**
      * This displays a page when "/" is requested, should link to home but I was lazy
@@ -59,9 +58,9 @@ public class AuthenticationController extends HttpServlet {
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public String handleLogin(@RequestParam(name="uname") String name, @RequestParam(name="pw") String pw, Model model,
                               HttpServletRequest request, HttpSession session){
-        pw = hashPass(pw);
+        pw = userService.hashPass(pw);
 
-        UserEntity user = service.getUser(name);
+        UserEntity user = userService.getUser(name);
         if(user == null){
             model.addAttribute("error",true);
             return "login";

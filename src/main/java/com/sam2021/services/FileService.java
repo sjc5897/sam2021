@@ -21,10 +21,10 @@ import java.util.List;
 @Service
 public class FileService {
     @Autowired
-    ServletContext context;
+    private ServletContext context;
 
     @Autowired
-    SubmissionRepo submissionRepo;
+    private SubmissionRepo submissionRepo;
 
     public void uploadFile(MultipartFile file) {
         try {

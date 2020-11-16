@@ -4,12 +4,17 @@
     <title>SAM2021</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:href="@{/css/forms.css}" rel="stylesheet"/>
+    <link th:href="@{/css/normalize.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/webflow.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/sam2021.webflow.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/images/favicon.ico}" rel="shortcut icon" type="image/x-icon"/>
+    <link th:href="@{/images/webclip.png}" rel="apple-touch-icon"/>
 </head>
 <header>
     <div th:include="fragments/header :: header"> </div>
 </header>
 <body>
-    <span th:include="fragments/review-table :: review-table(reviews=${reviews}, reviewstate'Current Submitted')"></span>
+    <span th:include="fragments/review-table :: review-table(reviews=${reviews}, reviewstate='Current Submitted')"></span>
     <div class="form">
         <h1>Final Report Form:</h1>
         <form method="POST" th:action="@{/pcc/report/} + ${sub_id}">
