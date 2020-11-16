@@ -7,6 +7,10 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepo extends JpaRepository<ReviewEntity,String>{
+    ReviewEntity getOneById(Long id);
+
+    ReviewEntity getOneByReviewerIdAndPaperId(Long reviewer_id, Long paper_id);
+
     List<ReviewEntity> getAllByReviewerIdAndCstate(Long id, String State);
     List<ReviewEntity> findAllByReviewerIdAndPaperId(Long review, Long paper);
     List<ReviewEntity> findById(Long id);

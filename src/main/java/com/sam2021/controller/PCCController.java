@@ -3,9 +3,9 @@ package com.sam2021.controller;
 import com.sam2021.database.ReviewEntity;
 import com.sam2021.database.SubmissionEntity;
 import com.sam2021.database.UserEntity;
-import com.sam2021.services.AdminService;
-import com.sam2021.services.PCCService;
-import org.apache.catalina.User;
+import com.sam2021.services.ReviewService;
+import com.sam2021.services.UserService;
+import com.sam2021.services.SubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,77 +19,106 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This is a custom controller for PCC pages into the system
+ * Language: Java 13
+ * Framework: Spring
+ * Author: Stephen Cook <sjc5897@rit.edu>
+ * Created: 11/4/20
+ * Last Edit: 11/14/20
+ */
 @Controller
 public class PCCController {
+    //Services
     @Autowired
-    PCCService service;
+    private SubmissionService submissionService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ReviewService reviewService;
+    /**
+     * gets the PCC homepage
+     * @param model     Model for frontend
+     * @param request   HttpRequest Servlet
+     * @return          String representing redirect
+     */
     @RequestMapping(value="/pcc", method= RequestMethod.GET)
     public String getPCCPage(Model model, HttpServletRequest request){
 
+        // Authenticate request
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        Long uid = (Long) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("pcc")){
-            return "redirect:/" + role;
+        String ret = userService.auth(session,"pcc");
+        if(ret != null){
+            return ret;
         }
 
-        //get reports
-        List<SubmissionEntity> submissionEntityList = service.getSubmissionbyState("SUBMITTED");
+        //get submitted papers
+        List<SubmissionEntity> submissionEntityList = submissionService.getSubmissionbyState("SUBMITTED");
         if(submissionEntityList != null && submissionEntityList.size() > 0){
             model.addAttribute("s_papers", submissionEntityList);
         }
-        List<SubmissionEntity> inProgressList = service.getSubmissionbyState("REVIEWING");
+
+        //get papers being reviewed
+        List<SubmissionEntity> inProgressList = submissionService.getSubmissionbyState("REVIEWING");
         if(inProgressList != null && inProgressList.size() > 0){
             model.addAttribute("i_papers", inProgressList);
         }
-        List<SubmissionEntity> reviewedPapersList = service.getSubmissionbyState("REVIEWED");
+
+        //get papers that have been reviewed
+        List<SubmissionEntity> reviewedPapersList = submissionService.getSubmissionbyState("REVIEWED");
         if(reviewedPapersList != null && reviewedPapersList.size() > 0){
             model.addAttribute("r_papers", reviewedPapersList);
         }
         return "pcc";
     }
+
+    /**
+     * Gets the pcc version of the review page
+     * @param paper_id  Long the requested paper if
+     * @param model     Model the model of objects
+     * @param request   HttpServletRequest the request
+     * @return          String representing redirect
+     */
     @RequestMapping(value="/pcc/review/{id}", method=RequestMethod.GET)
     public String getPCCReviewPage(@PathVariable("id") Long paper_id, Model model, HttpServletRequest request){
+        // Authenticate request
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        Long uid = (Long) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("pcc")){
-            return "redirect:/" + role;
+        String ret = userService.auth(session,"pcc");
+        if(ret != null){
+            return ret;
         }
 
         //Get Paper
-        SubmissionEntity submissionEntity = service.getSubmissionById(paper_id);
+        SubmissionEntity submissionEntity = submissionService.getSubmission(paper_id);
         if(submissionEntity==null){
             model.addAttribute("error","Submission not Found");
             return "redirect:/pcc";
         }
         model.addAttribute("submission", submissionEntity);
+
+        // If paper is in submitted get all the requested reviews
         if(submissionEntity.getCstate().equals("SUBMITTED")){
-            List<ReviewEntity> reviewRequests = service.getReviewByPaperIdAndState(paper_id,"REQUESTED");
-            if(reviewRequests != null && reviewRequests.size() > 1){
+            List<ReviewEntity> reviewRequests = reviewService.getReviewByPaperIdAndState(paper_id,"REQUESTED");
+            if(reviewRequests != null && reviewRequests.size() > 0){
                 model.addAttribute("req_reviews", reviewRequests);
                 HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviewRequests){
-                    reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
+                    reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
                 }
                 model.addAttribute("reviewer",reviewer);
             }
         }
+
+        // Otherwise get all the regular reviews
         else{
-            List<ReviewEntity> reviews = service.getReviewByPaperId(paper_id);
-            if(reviews != null && reviews.size() > 1){
+            List<ReviewEntity> reviews = reviewService.getReviewsByPaperId(paper_id);
+            if(reviews != null && reviews.size() > 0){
                 model.addAttribute("ack_reviews", reviews);
                 HashMap<Long, UserEntity> reviewer = new HashMap<>();
                 for(ReviewEntity r : reviews){
-                    //System.out.println(service.getReviewer(r.getReviewer_id()).getid());
-                    reviewer.put(r.getReviewer_id(), service.getReviewer(r.getReviewer_id()));
+                    reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
                 }
                 model.addAttribute("reviewer",reviewer);
             }
@@ -97,103 +126,143 @@ public class PCCController {
         return "sub";
     }
 
+    /**
+     * Approves the request for review from a PCM
+     * @param review_id The id of the review being approved
+     * @param request   HttpServletRequest the request
+     * @param model     Model the model of objects
+     * @return          String representing redirect
+     */
     @RequestMapping(value="/pcc/assign/{id}", method = RequestMethod.GET)
     public String approveReviewReq(@PathVariable("id") Long review_id, HttpServletRequest request, Model model){
+        // Authenticate request
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        Long uid = (Long) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("pcc")){
-            return "redirect:/" + role;
+        String ret = userService.auth(session,"pcc");
+        if(ret != null){
+            return ret;
         }
 
-        ReviewEntity reviewEntity = service.getReviewByReviewId(review_id);
+        // Gets review
+        ReviewEntity reviewEntity = reviewService.getReviewByReviewId(review_id);
         if(reviewEntity==null){
             model.addAttribute("error","Review not Found");
             return "redirect:/pcc";
         }
 
-        SubmissionEntity submissionEntity = service.getSubmissionById(reviewEntity.getPaper_id());
+        // checks that submission is valid
+        SubmissionEntity submissionEntity = submissionService.getSubmission(reviewEntity.getPaper_id());
         if(!submissionEntity.getCstate().equals("SUBMITTED")){
             model.addAttribute("error","Submission has 3 reviewers assigned");
             return "redirect:/pcc";
         }
-        service.assignReview(reviewEntity,submissionEntity);
+
+        //does submission
+        if(reviewService.assignReview(reviewEntity)){
+            submissionService.updateState("REVIEWING", submissionEntity.getId());
+        }
 
         return "redirect:/pcc/review/" + submissionEntity.getId();
 
-
-
     }
+
+    /**
+     * Handles the request for re-review
+     * @param paper_id  Long id of paper to be rereviewed
+     * @param request   HttpServletRequest the request
+     * @param model     Model the model of objects
+     * @return          String representing redirect
+     */
     @RequestMapping(value="/pcc/rereview/{id}", method = RequestMethod.GET)
     public String rereview(@PathVariable("id") Long paper_id, HttpServletRequest request, Model model){
+        // Authenticate request
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        Long uid = (Long) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("pcc")){
-            return "redirect:/" + role;
+        String ret = userService.auth(session,"pcc");
+        if(ret != null){
+            return ret;
         }
 
-        List<ReviewEntity> reviewEntities = service.getReviewsByPaperId(paper_id);
+        // Gets list of reviews
+        List<ReviewEntity> reviewEntities = reviewService.getReviewsByPaperId(paper_id);
         if(reviewEntities==null || reviewEntities.size() < 3){
             model.addAttribute("error","Review not Found");
             return "redirect:/pcc";
         }
 
-        service.rereview(reviewEntities);
+        // Submits rereview
+        reviewService.rereview(reviewEntities);
+        submissionService.updateState("REVIEWING", reviewEntities.get(0).getPaper_id());
 
-        return "redirect:/pcc/review/" + reviewEntities.get(0).getPaper_id();
+        return "redirect:/pcc/review/" + paper_id;
     }
 
+    /**
+     * Gets the paper report creation form
+     * @param id        Long id of paper report is being generated for
+     * @param request   HttpServletRequest the request
+     * @param model     Model the model of objects
+     * @return          String representing redirect
+     */
     @RequestMapping(value="/pcc/report/{id}", method = RequestMethod.GET)
     public String getReportForm(@PathVariable("id") Long id, HttpServletRequest request, Model model){
+        // Authenticate request
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
-        }
-        Long uid = (Long) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("pcc")){
-            return "redirect:/" + role;
+        String ret = userService.auth(session,"pcc");
+        if(ret != null){
+            return ret;
         }
 
-        List<ReviewEntity> reviewEntities = service.getReviewByPaperId(id);
+        // Gets the paper's reviews
+        List<ReviewEntity> reviewEntities = reviewService.getReviewsByPaperId(id);
         if(reviewEntities==null || reviewEntities.size() < 3){
             model.addAttribute("error","Report for paper unavailable");
             return "redirect:/pcc";
         }
         model.addAttribute("reviews",reviewEntities);
+
+        HashMap<Long, UserEntity> reviewer = new HashMap<>();
+        for(ReviewEntity r : reviewEntities){
+            reviewer.put(r.getReviewer_id(), userService.getUserById(r.getReviewer_id()));
+        }
+        model.addAttribute("reviewer",reviewer);
+
+        // Calcs average
         int ave = 0;
         for(ReviewEntity e : reviewEntities){
             ave += e.getRating();
         }
         ave = ave/3;
-        model.addAttribute("sub_id", reviewEntities.get(0).getPaper_id());
+
+
+        model.addAttribute("sub_id", id);
         model.addAttribute("ave",ave);
         return "report_create";
     }
 
+     /**
+     * Handles submission of paper report form
+     * @param id        Long id of paper report is being generated for
+     * @param rating    int PCC's rating
+     * @param PCCcmt    String PCC's Comments
+     * @param request   HttpServletRequest the request
+     * @param model     Model the model of objects
+     * @return          String representing redirect
+     */
     @RequestMapping(value="/pcc/report/{id}", method = RequestMethod.POST)
-    public String getReportForm(@PathVariable("id") Long id,
+    public String postReportForm(@PathVariable("id") Long id,
                                 @RequestParam("rating") int rating,
                                 @RequestParam("comments") String PCCcmt,
                                 HttpServletRequest request, Model model){
+        // Authenticate request
         HttpSession session = request.getSession();
-        if(session.isNew()){
-            return "redirect:/login";
+        String ret = userService.auth(session,"pcc");
+        if(ret != null){
+            return ret;
         }
-        Long uid = (Long) session.getAttribute("uid");
-        String role = (String) session.getAttribute("role");
-        if(!role.equals("pcc")){
-            return "redirect:/" + role;
-        }
-        service.submitReport(uid, id, rating, PCCcmt);
 
-        return "redirect:/pcc/review/{id}" + id;
+        //Submits report
+        reviewService.submitReport((Long) session.getAttribute("uid"), id, rating, PCCcmt);
+        submissionService.updateState("RELEASED", id);
+
+        return "redirect:/pcc/";
     }
 }

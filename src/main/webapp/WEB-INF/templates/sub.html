@@ -24,7 +24,11 @@
         <a th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}"
             th:href="@{/pcc/report/} + ${submission.getId()}">Create Report</a>
     -->
-    <div class="submit-new-paper submit" th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}" th:href="@{/pcc/report/} + ${submission.getId()}"><input type="submit" value="Create Report" data-wait="Please wait..." class="submit-button uploadnew w-button"></div>
+    <div class="submit-new-paper submit" th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}" >
+        <a th:href="@{/pcc/report/} + ${submission.getId()}" class="submit-button uploadnew w-button" value="Create Report">Create Report</a>
+    </div>
+
+
 
     <div>
         <ul role="list" class="list custom-style w-list-unstyled" >
@@ -39,8 +43,11 @@
                     <div class="w-col w-col-1">
                         <div class="text-block-12 list-heading"><strong>Format</strong></div>
                     </div>
-                    <div class="w-col w-col-2">
+                    <div class="w-col w-col-1">
                         <div class="text-block-12 list-heading"><strong>Version</strong></div>
+                    </div>
+                    <div class="w-col w-col-1">
+                        <div class="text-block-12 list-heading"><strong>Action</strong></div>
                     </div>
                 </div>
             </li>
@@ -57,18 +64,26 @@
                     <div class="w-col w-col-1">
                         <div class="text-block-12" th:text="${submission.getFormat()}"></div>
                     </div>
-                    <div class="column-5 w-col w-col-2" th:text="${submission.getVersion()}"></div>
+                    <div class="w-col w-col-1">
+                        <div class="text-block-12" th:text="${submission.getVersion()}"></div>
+                    </div>
+                    <div class="w-col w-col-1">
+                        <div class="text-block-12 list-heading"><a th:href="@{/download/} + ${submission.getFileName()}"><img src="/images/view.svg" loading="lazy" alt="" class="edit-icon"></a></div>
+                    </div>
                 </div>
             </li>
             <li></li>
         </ul>
     </div>
-
     <span th:if="${session.role == 'pcc'} and ${req_reviews != null}" th:include="fragments/review-table :: review-table(reviews=${req_reviews}, reviewtype='Requested')">
-
     </span>
-    <div class="submit-new-paper submit" th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}" th:href="@{/pcc/rereview/} + ${submission.getId()}"><input type="submit" value="Request Re-Review" data-wait="Please wait..." class="submit-button uploadnew w-button"></div>
+    <span th:if="${session.role == 'author'} and ${reviews != null}"
+          th:include="fragments/review-table :: review-table(reviews=${reviews}, reviewtype='Requested')">
+    </span>
 
+    <div class="submit-new-paper submit" th:if="${session.role == 'pcc'} and ${submission.getCstate() == 'REVIEWED'}" >
+        <a th:href="@{/pcc/rereview/} + ${submission.getId()}" class="submit-button uploadnew w-button" value="Request Re-Review">Request Re-Review</a>
+    </div>
 
     <span th:if="${session.role == 'pcc'} and ${ack_reviews != null}"
           th:include="fragments/review-table :: review-table(reviews=${ack_reviews}, reviewtype='Current')">
