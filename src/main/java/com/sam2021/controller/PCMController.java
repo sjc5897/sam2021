@@ -136,7 +136,7 @@ public class PCMController extends HttpServlet {
 
         ReviewEntity reviewEntity = reviewService.getReviewByReviewId(review_id);
         // ensure the submission exists
-        if(reviewEntity == null || reviewEntity.getReviewer_id() != uid || reviewEntity.getCstate().equals("REQUESTED")){
+        if(reviewEntity == null || !reviewEntity.getReviewer_id().equals(uid) || reviewEntity.getCstate().equals("REQUESTED")){
             model.addAttribute("error", "Invalid Review Request");
             return "redirect:/pcm";
         }

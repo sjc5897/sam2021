@@ -23,7 +23,7 @@
                 <option class="opt" value="save">Save</option>
                 <option class="opt" value="submit">Submit</option>
             </select><br>
-            <input th:if="${review.getCstate().equals('ASSIGNED')}" type="submit" value="Save" onclick="confirm('Confirm Review?')">
+            <input th:if="${review.getCstate().equals('ASSIGNED')}" type="submit" value="Save" onclick="return confirm('Confirm Review?')">
         </form>
     </div>
 </body>
