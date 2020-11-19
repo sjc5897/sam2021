@@ -29,4 +29,5 @@ NOTE: the above Enviromental Variable configuration must be done for the run.bat
 Check http://localhost:8080/ \
 You can create your own profile.
 
+Preloaded Admin Account:
 username: admin@admin.com password qwerty
